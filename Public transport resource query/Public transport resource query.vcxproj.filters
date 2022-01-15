@@ -18,5 +18,19 @@
     <ClCompile Include="test.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Prompttext.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Prompttext.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
