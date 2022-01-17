@@ -2,6 +2,8 @@
 
 #include "Prompttext.h"
 
+#define function_printf(X,FORMAT) printf("当前参数："#X" 值："FORMAT"\n"，X);
+
 //倒计时组件
 //void Countdown()
 //{
@@ -65,7 +67,6 @@ void function_countion()
 	printf("          |    0. < 返回上层目录 >    |           \n");
 	printf("          |                           |           \n");
 	printf("          -----------------------------           \n");
-	printf("请输入：\n");
 }
 
 //情况反馈

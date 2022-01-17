@@ -58,18 +58,43 @@ void Load_Resource(Date_Base* pc)
 	pf = NULL;
 }
 
+//检测增容
+void CheckResource(Date_Base* pc)
+{
+	if (pc->sz == pc->capacity)
+	{
+		Date_Name* ptr1 = (Date_Name*)realloc(pc->name_1, (pc->capacity + Default_sz) * sizeof(Date_Name));
+		Date_Context* ptr2 = (Date_Context*)realloc(pc->context_1, (pc->capacity + Default_sz) * sizeof(Date_Context));
+		if (ptr1 != NULL && ptr2 != NULL)
+		{
+			pc->name_1 = ptr1;
+			pc->context_1 = ptr2;
+			pc->capacity += Default_sz;
+			printf("增容成功！\n");
+			return;
+		}
+		else
+		{
+			perror("CheckResource");
+			printf("增容失败！\n3秒后继续\n");
+			Sleep(3000);
+			return;
+		}
+	}
+}
+
 //录入数据 - 动态（静态）版本
 void AddResource(Date_Base* pc)
 {
 	//确认容量
 	CheckResource(pc);
-
-	if (pc->sz == MAX)
-	{
-		printf("空间已满,3秒后自动返回。\n");
-		Sleep(3000);
-		return;
-	}
+		//静态版本
+		//if (pc->sz == MAX)
+		//{
+		//	printf("空间已满,3秒后自动返回。\n");
+		//	Sleep(3000);
+		//	return;
+		//}
 	//增加内容
 	printf("请输入 年 月 日 [例：20220101]：\n");
 	scanf("%4d%2d%2d", &(pc->name_1[pc->sz].year), &(pc->name_1[pc->sz].month), &(pc->name_1[pc->sz].day));
@@ -129,32 +154,6 @@ void SeacrhResource(Date_Base* pc)
 	system("pause");
 }
 
-//检测增容
-void CheckResource(Date_Base* pc)
-{
-	if (pc->sz == pc->capacity)
-	{
-		Date_Name* ptr1 = (Date_Name*)realloc(pc->name_1, (pc->capacity + Default_sz) * sizeof(Date_Name));
-		Date_Context* ptr2 = (Date_Context*)realloc(pc->context_1, (pc->capacity + Default_sz) * sizeof(Date_Context));
-		if (ptr1 != NULL && ptr2 != NULL)
-		{
-			pc->name_1 = ptr1;
-			pc->context_1 = ptr2;
-			pc->capacity += Default_sz;
-			printf("增容成功！\n3秒后继续\n");
-			Sleep(3000);
-			return;
-		}
-		else
-		{
-			perror("CheckResource");
-			printf("增容失败！\n3秒后继续\n");
-			Sleep(3000);
-			return;
-		}
-	}
-}
-
 //保存文件
 void SaveResource(Date_Base* pc)
 {
@@ -177,7 +176,6 @@ void SaveResource(Date_Base* pc)
 	pf = NULL;
 	//void function_over();//测试功能
 }
-
 
 static int FindHeadlineResource(Date_Base* pc, char Headline[])
 {
@@ -221,6 +219,56 @@ void DelateResource(Date_Base* pc)
 	}
 	printf("删除成功,3秒后自动返回。\n");
 	Sleep(3000);
+}
+
+//修改文件
+void ModityResource(Date_Base* pc)
+{
+	char Headline[TEXT_200];
+	printf("请输入要修改的标题名称:");
+	scanf("%s", Headline);
+	int pos = FindHeadlineResource(pc, Headline);
+	if (pos == -1)
+	{
+		printf("未找到相关内容,3秒后自动返回。\n");
+		Sleep(3000);
+		return;
+	}
+	else
+	{
+		printf("请输入 年 月 日 [例：20220101]：\n");
+		scanf("%4d%2d%2d", &(pc->name_1[pos].year), &(pc->name_1[pos].month), &(pc->name_1[pos].day));
+		while (1)
+		{
+			if ((pc->name_1[pos].month) < 13 && (pc->name_1[pos].month) > 0)
+			{
+				if (pc->name_1[pos].day > 0 && pc->name_1[pos].day < 32)
+				{
+					printf("请输入标题：\n");
+					scanf("%s", pc->name_1[pos].headline);
+					printf("请输入内容：\n");
+					scanf("%s", pc->context_1[pos].context_paragraph);//注意，此处sz不需要++
+					printf("          -----------------------------           \n");
+					printf("          |  成功录入，3秒后自动返回  |           \n");
+					printf("          -----------------------------           \n");
+					Sleep(3000);
+					break;
+				}
+				else
+				{
+					printf("日期非正常数据，请确认输入！\n3秒后返回管理界面\n");
+					Sleep(3000);
+					break;
+				}
+			}
+			else
+			{
+				printf("月份非正常数据，请确认输入！\n3秒后返回管理界面\n");
+				Sleep(3000);
+				break;
+			}
+		}
+	}
 }
 
 //销毁内存

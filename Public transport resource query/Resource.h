@@ -88,6 +88,9 @@ void CheckResource(Date_Base* pc);
 //保存文件
 void SaveResource(Date_Base* pc);
 
+//修改文件
+void ModityResource(Date_Base* pc);
+
 //删除内容
 void DelateResource(Date_Base* pc);
 

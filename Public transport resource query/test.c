@@ -58,7 +58,7 @@ int main()
 	//初始化输入值
 	int input_1 = 0;
 	int input_1_1 = 0;
-	int templeinput = 0;//公用input
+	int templeinput = 1;//公用input
 
 	//创建资源空间
 	Date_Base Base_1;//资源名称
@@ -76,19 +76,6 @@ int main()
 			//查询
 			/*function_underbuild();*/
 			SeacrhResource(&Base_1);
-			//void function_countion();//继续反馈
-			//while (scanf("%d", &templeinput))
-			//{
-			//	if (templeinput != 1)
-			//	{
-			//		printf("输入错误，请重新输入！\n");
-			//		break;
-			//	}
-			//	else
-			//	{
-			//		input_1 = 1;
-			//	}
-			//}
 			system("cls");
 			break;
 		case Exit_Witnout_Saving:
@@ -96,7 +83,7 @@ int main()
 			Destorycontact(&Base_1);//销毁内存
 			break;
 		case Save:
-			//保存退出
+			//保存
 			//function_underbuild();
 			SaveResource(&Base_1);
 			Destorycontact(&Base_1);//销毁内存
@@ -125,12 +112,13 @@ int main()
 					break;
 				case Change:
 					//修改数据
-					function_underbuild();
+					/*function_underbuild();*/
+					ModityResource(&Base_1);
 					system("cls");
 					break;
 				case Delete:
 					//删除数据
-					function_underbuild();
+					/*function_underbuild();*/
 					DelateResource(&Base_1);
 					system("cls");
 					break;
