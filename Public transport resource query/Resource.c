@@ -6,23 +6,24 @@
 //结构初始化 - 动态版本
 void InitResource(Date_Base* pc)
 {
-	pc->name_1 = (Date_Name*)malloc(Default_sz * sizeof(Date_Name));
+	pc->name_1 = (Date_Name*)malloc(sizeof(Date_Name));
 	if (pc->name_1 == NULL)
 	{
 		perror("Initresource/Date_Name");
 		return;
 	}
-	pc->context_1 = (Date_Context*)malloc(Default_sz * sizeof(Date_Context));
+	pc->context_1 = (Date_Context*)malloc(sizeof(Date_Context));
 	if (pc->context_1 == NULL)
 	{
 		perror("Initresource/Date_Context");
 		return;
 	}
 	pc->sz = 0;
-	pc->capacity = Default_sz;
+	pc->capacity = 1;
 
 	//加载文件
-	Load_Resource(pc);
+	//Load_Resource(pc);  
+	printf("变长数组调试，暂停加载\n");
 }
 
 //加载文件
@@ -46,6 +47,7 @@ void Load_Resource(Date_Base* pc)
 			pc->name_1[pc->sz] = tmp1;
 			pc->context_1[pc->sz] = tmp2;
 			pc->sz++;
+			system("cls");//临时性措施
 		}
 		else
 		{
@@ -87,7 +89,8 @@ void CheckResource(Date_Base* pc)
 void AddResource(Date_Base* pc)
 {
 	//确认容量
-	CheckResource(pc);
+	//CheckResource(pc);
+	printf("变长数组调试，暂停加载确认容量\n");
 		//静态版本
 		//if (pc->sz == MAX)
 		//{
@@ -96,16 +99,29 @@ void AddResource(Date_Base* pc)
 		//	return;
 		//}
 	//增加内容
+	int year = 0;
+	int month = 0;
+	int day = 0;
+	int headlinecount = 0;
+	char headline[TEXT_200] = { 0 };
+
 	printf("请输入 年 月 日 [例：20220101]：\n");
-	scanf("%4d%2d%2d", &(pc->name_1[pc->sz].year), &(pc->name_1[pc->sz].month), &(pc->name_1[pc->sz].day));
+	scanf("%4d%2d%2d", &(year), &(month), &(day));
 	while (1)
 	{
-		if ((pc->name_1[pc->sz].month) < 13 && (pc->name_1[pc->sz].month) > 0)
+		if (month < 13 && month > 0)
 		{
-			if (pc->name_1[pc->sz].day > 0 && pc->name_1[pc->sz].day < 32)
+			if (day > 0 && day < 32)
 			{
 				printf("请输入标题：\n");
-				scanf("%s", pc->name_1[pc->sz].headline);
+				scanf("%s", headline);
+				headlinecount = sizeof(headline);
+				realloc(pc->name_1, sizeof(Date_Name) + (headlinecount + 1) * sizeof(char));
+				pc->name_1[pc->sz].year = year;
+				pc->name_1[pc->sz].month = month;
+				pc->name_1[pc->sz].day = day;
+				pc->name_1[pc->sz].headlinecount = headlinecount;
+				memcpy((char*)(pc->name_1[pc->sz].headline), headline, headlinecount);
 				printf("请输入内容：\n");
 				scanf("%s", pc->context_1[pc->sz].context_paragraph);
 				pc->sz++;
@@ -129,6 +145,39 @@ void AddResource(Date_Base* pc)
 			break;
 		}
 	}
+			/*printf("请输入 年 月 日 [例：20220101]：\n");
+			scanf("%4d%2d%2d", &(pc->name_1[pc->sz].year), &(pc->name_1[pc->sz].month), &(pc->name_1[pc->sz].day));
+			while (1)
+			{
+				if ((pc->name_1[pc->sz].month) < 13 && (pc->name_1[pc->sz].month) > 0)
+				{
+					if (pc->name_1[pc->sz].day > 0 && pc->name_1[pc->sz].day < 32)
+					{
+						printf("请输入标题：\n");
+						scanf("%s", pc->name_1[pc->sz].headline);
+						printf("请输入内容：\n");
+						scanf("%s", pc->context_1[pc->sz].context_paragraph);
+						pc->sz++;
+						printf("          -----------------------------           \n");
+						printf("          |  成功录入，3秒后自动返回  |           \n");
+						printf("          -----------------------------           \n");
+						Sleep(3000);
+						break;
+					}
+					else
+					{
+						printf("日期非正常数据，请确认输入！\n3秒后返回管理界面\n");
+						Sleep(3000);
+						break;
+					}
+				}
+				else
+				{
+					printf("月份非正常数据，请确认输入！\n3秒后返回管理界面\n");
+					Sleep(3000);
+					break;
+				}
+			}*/
 }
 
 //查询

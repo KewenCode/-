@@ -2,7 +2,7 @@
 
 #include "Prompttext.h"
 
-#define function_printf(X,FORMAT) printf("当前参数："#X" 值："FORMAT"\n"，X);
+//#define function_printf(X,FORMAT) printf("当前参数："#X" 值："FORMAT"\n"，X);
 
 //倒计时组件
 //void Countdown()
@@ -74,4 +74,18 @@ void function_over()
 {
 	printf("正常 正常 正常\n");
 	Sleep(3000);
+}
+
+//关于
+void function_About()
+{
+	printf("        -----------------------------------       \n");
+	printf("        文件版本(FileVersion):"); 
+	printf("%s", FileVersion);
+	printf("\n");
+	printf("        发布版本(ProductVersion):");
+	printf("%s", ProductVersion);
+	printf("\n");
+	printf("        -----------------------------------       \n");
+	system("pause");
 }

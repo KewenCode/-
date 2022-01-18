@@ -1,5 +1,9 @@
 #pragma once
-#pragma warning(disable:6031)//忽略vs中scanf报错的nc行为
+#pragma warning(disable : 6031)//忽略vs中scanf报错的nc行为
+#pragma warning(disable : 5105)//生成“已定义”的宏扩展具有未定义的行为
+
+#define FileVersion "V0.0.4.0"
+#define ProductVersion "V0.0.1.0"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,7 +43,8 @@ typedef struct Date_Name
 	int year;
 	int month;
 	int day;
-	char headline[TEXT_200];
+	int headlinecount;
+	char headline[0];
 	//char id_1[TEXT_10];//每个数据赋予单一编号
 }Date_Name;
 

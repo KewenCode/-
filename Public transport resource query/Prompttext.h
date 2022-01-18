@@ -19,3 +19,6 @@ void function_countion();
 
 //情况反馈
 void function_over();
+
+//关于
+void function_About();

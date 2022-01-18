@@ -11,12 +11,12 @@ void menu_1_1()
 	printf("|------------------------------------------------|\n");
 	printf("|                    管理功能                    |\n");
 	printf("|                                                |\n");
-	printf("|              1.  [ 录入 数据 ]                 |\n");
-	printf("|              2.  [ 导出 数据 ]                 |\n");
-	printf("|              3.  [ 删除 数据 ]                 |\n");
-	printf("|              4.  [ 修改 数据 ]                 |\n");
+	printf("|               1.  [ 录入数据 ]                 |\n");
+	printf("|               2.  [ 导出数据 ]                 |\n");
+	printf("|               3.  [ 删除数据 ]                 |\n");
+	printf("|               4.  [ 修改数据 ]                 |\n");
 	printf("|                                                |\n");
-	printf("|              0. < 返回上层目录 >               |\n");
+	printf("|               0. <返回上层目录>                |\n");
 	printf("--------------------------------------------------\n");
 }
 
@@ -28,10 +28,11 @@ void menu_1()
 	printf("|------------------------------------------------|\n");
 	printf("|                    基础功能                    |\n");
 	printf("|                                                |\n");
-	printf("|               1.   [ 查 询 ]                   |\n");
+	printf("|               1.  [ 查    询 ]                 |\n");
 	printf("|               2.  [ 管理功能 ]                 |\n");
+	printf("|               3.  [ 关    于 ]                 |\n");
 	printf("|                                                |\n");
-	printf("|               3.  < 保存退出 >                 |\n");
+	printf("|               4. <  保存 退出 >                |\n");
 	printf("|               0. < 不保存退出 >                |\n");
 	printf("--------------------------------------------------\n");
 }
@@ -50,6 +51,7 @@ enum Option_menu_1
 	Exit_Witnout_Saving,
 	Search,
 	Manage_Function,
+	About,
 	Save
 };
 
@@ -131,6 +133,11 @@ int main()
 					break;
 				}
 			} while (input_1_1);
+			break;
+		case About:
+			//关于
+			function_About();
+			system("cls");
 			break;
 		default:
 			input_error();
