@@ -2,7 +2,7 @@
 #pragma warning(disable : 6031)//忽略vs中scanf报错的nc行为
 #pragma warning(disable : 5105)//生成“已定义”的宏扩展具有未定义的行为
 
-#define FileVersion "V0.0.4.0"
+#define FileVersion "V0.0.4.1-dev"
 #define ProductVersion "V0.0.1.0"
 
 #include <stdio.h>
@@ -19,7 +19,7 @@
 #define TEXT_500 501
 #define TEXT_1000 1001
 
-#define Default_sz 3//默认大小
+#define DEFAULT_SZ 3//默认大小
 #define MAX 3
 
 //--------------------[ 静 态 ]可修改范围--------------------

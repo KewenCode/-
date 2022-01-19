@@ -51,7 +51,7 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,0,4,0
+ FILEVERSION 0,0,4,1
  PRODUCTVERSION 0,0,1,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
@@ -68,8 +68,8 @@ BEGIN
         BLOCK "080404b0"
         BEGIN
             VALUE "CompanyName", "Y"
-            VALUE "FileDescription", "公交资源查询"
-            VALUE "FileVersion", "0.0.4.0"
+            VALUE "FileDescription", "公交资源查询-dev"
+            VALUE "FileVersion", "0.0.4.1"
             VALUE "InternalName", "公交资源查询.exe"
             VALUE "LegalCopyright", "Copyright (C) 2022"
             VALUE "OriginalFilename", "公交资源查询.exe"

@@ -65,13 +65,13 @@ void CheckResource(Date_Base* pc)
 {
 	if (pc->sz == pc->capacity)
 	{
-		Date_Name* ptr1 = (Date_Name*)realloc(pc->name_1, (pc->capacity + Default_sz) * sizeof(Date_Name));
-		Date_Context* ptr2 = (Date_Context*)realloc(pc->context_1, (pc->capacity + Default_sz) * sizeof(Date_Context));
+		Date_Name* ptr1 = (Date_Name*)realloc(pc->name_1, (pc->capacity + DEFAULT_SZ) * sizeof(Date_Name));
+		Date_Context* ptr2 = (Date_Context*)realloc(pc->context_1, (pc->capacity + DEFAULT_SZ) * sizeof(Date_Context));
 		if (ptr1 != NULL && ptr2 != NULL)
 		{
 			pc->name_1 = ptr1;
 			pc->context_1 = ptr2;
-			pc->capacity += Default_sz;
+			pc->capacity += DEFAULT_SZ;
 			printf("增容成功！\n");
 			return;
 		}
@@ -91,20 +91,13 @@ void AddResource(Date_Base* pc)
 	//确认容量
 	//CheckResource(pc);
 	printf("变长数组调试，暂停加载确认容量\n");
-		//静态版本
-		//if (pc->sz == MAX)
-		//{
-		//	printf("空间已满,3秒后自动返回。\n");
-		//	Sleep(3000);
-		//	return;
-		//}
-	//增加内容
+	//结构体临时内容
 	int year = 0;
 	int month = 0;
 	int day = 0;
 	int headlinecount = 0;
 	char headline[TEXT_200] = { 0 };
-
+	//赋值
 	printf("请输入 年 月 日 [例：20220101]：\n");
 	scanf("%4d%2d%2d", &(year), &(month), &(day));
 	while (1)
@@ -116,12 +109,14 @@ void AddResource(Date_Base* pc)
 				printf("请输入标题：\n");
 				scanf("%s", headline);
 				headlinecount = sizeof(headline);
-				realloc(pc->name_1, sizeof(Date_Name) + (headlinecount + 1) * sizeof(char));
+				realloc(pc->name_1, sizeof(Date_Name) + (headlinecount + 1) * sizeof(char));//增容空间
+				//结构体赋值
 				pc->name_1[pc->sz].year = year;
 				pc->name_1[pc->sz].month = month;
 				pc->name_1[pc->sz].day = day;
 				pc->name_1[pc->sz].headlinecount = headlinecount;
-				memcpy((char*)(pc->name_1[pc->sz].headline), headline, headlinecount);
+				char* headlinepoint = headline;//字符串转为字符指针
+				memcpy(pc->name_1[pc->sz].headline, headlinepoint, headlinecount);
 				printf("请输入内容：\n");
 				scanf("%s", pc->context_1[pc->sz].context_paragraph);
 				pc->sz++;
@@ -145,39 +140,6 @@ void AddResource(Date_Base* pc)
 			break;
 		}
 	}
-			/*printf("请输入 年 月 日 [例：20220101]：\n");
-			scanf("%4d%2d%2d", &(pc->name_1[pc->sz].year), &(pc->name_1[pc->sz].month), &(pc->name_1[pc->sz].day));
-			while (1)
-			{
-				if ((pc->name_1[pc->sz].month) < 13 && (pc->name_1[pc->sz].month) > 0)
-				{
-					if (pc->name_1[pc->sz].day > 0 && pc->name_1[pc->sz].day < 32)
-					{
-						printf("请输入标题：\n");
-						scanf("%s", pc->name_1[pc->sz].headline);
-						printf("请输入内容：\n");
-						scanf("%s", pc->context_1[pc->sz].context_paragraph);
-						pc->sz++;
-						printf("          -----------------------------           \n");
-						printf("          |  成功录入，3秒后自动返回  |           \n");
-						printf("          -----------------------------           \n");
-						Sleep(3000);
-						break;
-					}
-					else
-					{
-						printf("日期非正常数据，请确认输入！\n3秒后返回管理界面\n");
-						Sleep(3000);
-						break;
-					}
-				}
-				else
-				{
-					printf("月份非正常数据，请确认输入！\n3秒后返回管理界面\n");
-					Sleep(3000);
-					break;
-				}
-			}*/
 }
 
 //查询
@@ -339,5 +301,5 @@ void Destorycontact(Date_Base* pc)
 //	memset(pc->name_1, 0, sizeof(pc->name_1));
 //	memset(pc->context_1, 0, sizeof(pc->context_1));
 //	pc->sz = 0;
-//	pc->capacity = Default_sz;
+//	pc->capacity = DEFAULT_SZ;
 //}
