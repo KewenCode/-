@@ -66,6 +66,7 @@ typedef struct Date_Base
 	//char id[TEXT_10];//每个数据赋予单一编号
 	int sz;//记录当前有效信息数量
 	int capacity;//记录当前最大容量
+	Date_Base* next;
 }Date_Base;
 
 //线路 存储结构

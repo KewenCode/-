@@ -3,6 +3,31 @@
 #include "Resource.h"
 #include "Prompttext.h"
 
+//链表 - 尾插法
+void addinfo(Date_Base** resource)//resource是头指针
+{
+	Date_Base* pc = NULL;
+	Date_Base* temp = NULL;
+	static Date_Base* tail = NULL;//设置空指针
+	pc = (Date_Base*)malloc(sizeof(struct Date_Base));
+	if (pc = NULL)
+	{
+		perror("addinfo");
+		exit(1);
+	}
+	AddResource(pc);
+	if (*resource != NULL)
+	{
+		tail->next = pc;//静态指向最后一位函数
+		pc->next = NULL;
+	}
+	else
+	{
+		*resource = pc;
+		pc->next = NULL;
+	}
+}
+
 //结构初始化 - 动态版本
 void InitResource(Date_Base* pc)
 {
