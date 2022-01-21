@@ -3,30 +3,7 @@
 #include "Resource.h"
 #include "Prompttext.h"
 
-//链表 - 尾插法
-void addinfo(Date_Base** resource)//resource是头指针
-{
-	Date_Base* pc = NULL;
-	Date_Base* temp = NULL;
-	static Date_Base* tail = NULL;//设置空指针
-	pc = (Date_Base*)malloc(sizeof(struct Date_Base));
-	if (pc = NULL)
-	{
-		perror("addinfo");
-		exit(1);
-	}
-	AddResource(pc);
-	if (*resource != NULL)
-	{
-		tail->next = pc;//静态指向最后一位函数
-		pc->next = NULL;
-	}
-	else
-	{
-		*resource = pc;
-		pc->next = NULL;
-	}
-}
+
 
 //结构初始化 - 动态版本
 void InitResource(Date_Base* pc)
@@ -48,7 +25,7 @@ void InitResource(Date_Base* pc)
 
 	//加载文件
 	//Load_Resource(pc);  
-	printf("变长数组调试，暂停加载\n");
+	printf("变长数组调试，暂停加载文件\n");
 }
 
 //加载文件
@@ -110,7 +87,7 @@ void CheckResource(Date_Base* pc)
 	}
 }
 
-//录入数据 - 动态（静态）版本
+//录入数据 - 动态版本
 void AddResource(Date_Base* pc)
 {
 	//确认容量
@@ -122,6 +99,8 @@ void AddResource(Date_Base* pc)
 	int day = 0;
 	int headlinecount = 0;
 	char headline[TEXT_200] = { 0 };
+	int contextcount = 0;
+	char context_paragraph[TEXT_1000] = { 0 };
 	//赋值
 	printf("请输入 年 月 日 [例：20220101]：\n");
 	scanf("%4d%2d%2d", &(year), &(month), &(day));
@@ -134,16 +113,20 @@ void AddResource(Date_Base* pc)
 				printf("请输入标题：\n");
 				scanf("%s", headline);
 				headlinecount = sizeof(headline);
+				char* headlinepoint = headline;//字符串转为字符指针
 				realloc(pc->name_1, sizeof(Date_Name) + (headlinecount + 1) * sizeof(char));//增容空间
 				//结构体赋值
 				pc->name_1[pc->sz].year = year;
 				pc->name_1[pc->sz].month = month;
 				pc->name_1[pc->sz].day = day;
 				pc->name_1[pc->sz].headlinecount = headlinecount;
-				char* headlinepoint = headline;//字符串转为字符指针
 				memcpy(pc->name_1[pc->sz].headline, headlinepoint, headlinecount);
 				printf("请输入内容：\n");
-				scanf("%s", pc->context_1[pc->sz].context_paragraph);
+				scanf("%s", context_paragraph);
+				contextcount = sizeof(context_paragraph);
+				char* contextpoint = context_paragraph;
+				realloc(pc->context_1, sizeof(Date_Context) + (contextcount + 1) * sizeof(char));
+				memcpy(pc->context_1[pc->sz].context_paragraph, contextpoint, contextcount);
 				pc->sz++;
 				printf("          -----------------------------           \n");
 				printf("          |  成功录入，3秒后自动返回  |           \n");
@@ -166,6 +149,31 @@ void AddResource(Date_Base* pc)
 		}
 	}
 }
+
+//录入数据 - 链表尾插法
+		//void AddResource_LinkedList(Date_Base** resource)//resource是头指针
+		//{
+		//	Date_Base* pc = NULL;
+		//	Date_Base* temp = NULL;
+		//	static Date_Base* tail = NULL;//设置空指针
+		//	pc = (Date_Base*)malloc(sizeof(struct Date_Base));
+		//	if (pc = NULL)
+		//	{
+		//		perror("addinfo");
+		//		exit(1);
+		//	}
+		//	AddResource(pc);
+		//	if (*resource != NULL)
+		//	{
+		//		tail->next = pc;//静态指向最后一位函数
+		//		pc->next = NULL;
+		//	}
+		//	else
+		//	{
+		//		*resource = pc;
+		//		pc->next = NULL;
+		//	}
+		//}
 
 //查询
 void SeacrhResource(Date_Base* pc)

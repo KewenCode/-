@@ -51,9 +51,9 @@ typedef struct Date_Name
 //内容 存储结构
 typedef struct Date_Context
 {
-	char context_paragraph[TEXT_1000];//每段内容
+	int contextcount;
+	char context_paragraph[0];//每段内容
 	//int line;//记录行数
-	//char id_2[TEXT_10];//每个数据赋予单一编号
 }Date_Context;
 
 //完整结构 - 动态版本
@@ -66,7 +66,7 @@ typedef struct Date_Base
 	//char id[TEXT_10];//每个数据赋予单一编号
 	int sz;//记录当前有效信息数量
 	int capacity;//记录当前最大容量
-	Date_Base* next;
+			//Date_Base* next;//链表
 }Date_Base;
 
 //线路 存储结构
