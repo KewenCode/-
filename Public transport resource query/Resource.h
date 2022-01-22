@@ -22,52 +22,30 @@
 #define DEFAULT_SZ 3//默认大小
 #define MAX 3
 
-//--------------------[ 静 态 ]可修改范围--------------------
-
-//完整结构 - 静态版本
-//typedef struct Date_Base
-//{
-//	Date_Name name_1[MAX];//日期名称
-//	Date_Context context_1[MAX];//内容
-//	//Date_BusLine* Busline_1;//线路
-//
-//	//char id[TEXT_10];//每个数据赋予单一编号
-//	int sz;//记录当前有效信息数量
-//	int capacity;//记录当前最大容量
-//}Date_Base;
-
 
 //日期名称 存储结构
-typedef struct Date_Name
+typedef struct Base_Name
 {
-	int year;
-	int month;
-	int day;
-	int headlinecount;
+	unsigned int id;
+	unsigned int sz;//记录当前有效信息数量
+	unsigned int capacity;//记录当前最大容量
+	unsigned short year;
+	unsigned short month;
+	unsigned short day;
+	unsigned short headlinecount;
 	char headline[0];
-	//char id_1[TEXT_10];//每个数据赋予单一编号
-}Date_Name;
+}Base_Name;
 
-//内容 存储结构
-typedef struct Date_Context
+//文本内容 存储结构
+typedef struct Base_Context
 {
-	int contextcount;
+	unsigned int sz;//记录当前有效信息数量
+	unsigned int capacity;//记录当前最大容量
+	unsigned int id;
+	unsigned short line;//记录行数
+	unsigned short contextcount;
 	char context_paragraph[0];//每段内容
-	//int line;//记录行数
-}Date_Context;
-
-//完整结构 - 动态版本
-typedef struct Date_Base
-{
-	Date_Name* name_1;//日期名称
-	Date_Context* context_1;//内容
-	//Date_BusLine* Busline_1;//线路
-
-	//char id[TEXT_10];//每个数据赋予单一编号
-	int sz;//记录当前有效信息数量
-	int capacity;//记录当前最大容量
-			//Date_Base* next;//链表
-}Date_Base;
+}Base_Context;
 
 //线路 存储结构
 //typedef struct Date_BusLine
@@ -77,28 +55,28 @@ typedef struct Date_Base
 //}Date_BusLine;
 
 //结构初始化
-void InitResource(Date_Base* pc);
+void InitResource(Base_Name* name, Base_Context* context);
 
-//加载文件
-void Load_Resource(Date_Base* pc);
-
+////加载文件
+//void Load_Resource(Date_Base* pc);
+//
 //录入数据
-void AddResource(Date_Base* pc);
+void AddResource(Base_Name* name, Base_Context* context);
 
-//查询
-void SeacrhResource(Date_Base* pc);
+////查询
+//void SeacrhResource(Date_Name* name, Date_Context* context);
 
-//检测增容
-void CheckResource(Date_Base* pc);
-
-//保存文件
-void SaveResource(Date_Base* pc);
-
-//修改文件
-void ModityResource(Date_Base* pc);
-
-//删除内容
-void DelateResource(Date_Base* pc);
-
-//销毁内存
-void Destorycontact(Date_Base* pc);
+////检测增容
+//void CheckResource(Date_Base* pc);
+//
+////保存文件
+//void SaveResource(Date_Base* pc);
+//
+////修改文件
+//void ModityResource(Date_Base* pc);
+//
+////删除内容
+//void DelateResource(Date_Base* pc);
+//
+////销毁内存
+//void Destorycontact(Date_Base* pc);

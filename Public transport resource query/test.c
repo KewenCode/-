@@ -63,9 +63,10 @@ int main()
 	int templeinput = 1;//公用input
 
 	//创建资源空间
-	Date_Base Base_1;//资源名称
+	Base_Name Name_1;//资源名称
+	Base_Context Context_1;//资源文本
 	//初始化，申请空间
-	InitResource(&Base_1);
+	InitResource(&Name_1,&Context_1);
 	
 	do
 	{
@@ -76,19 +77,19 @@ int main()
 		{
 		case Search:
 			//查询
-			/*function_underbuild();*/
-			SeacrhResource(&Base_1);
+			function_underbuild();
+			//SeacrhResource(&Name_1, &Context_1);
 			system("cls");
 			break;
 		case Exit_Witnout_Saving:
 			//(不保存)退出
-			Destorycontact(&Base_1);//销毁内存
+			//Destorycontact(&Base_1);//销毁内存
 			break;
 		case Save:
 			//保存
 			//function_underbuild();
-			SaveResource(&Base_1);
-			Destorycontact(&Base_1);//销毁内存
+			//SaveResource(&Base_1);
+			//Destorycontact(&Base_1);//销毁内存
 			input_1 = 0;//转到退出
 			break;
 		case Manage_Function:
@@ -104,7 +105,7 @@ int main()
 				case Add:
 					//添加数据
 					/*function_underbuild();*/
-					AddResource(&Base_1);
+					AddResource(&Name_1, &Context_1);
 					system("cls");
 					break;
 				case Out:
@@ -114,14 +115,14 @@ int main()
 					break;
 				case Change:
 					//修改数据
-					/*function_underbuild();*/
-					ModityResource(&Base_1);
+					function_underbuild();
+					//ModityResource(&Base_1);
 					system("cls");
 					break;
 				case Delete:
 					//删除数据
-					/*function_underbuild();*/
-					DelateResource(&Base_1);
+					function_underbuild();
+					//DelateResource(&Base_1);
 					system("cls");
 					break;
 				case Back_menu_1:
