@@ -6,27 +6,31 @@
 
 
 //结构初始化 - 动态版本
-void InitResource(Base_Name* name, Base_Context* context)
-{
-	Base_Name* BN = malloc(sizeof(Base_Name));
-	if (BN == NULL)
-	{
-		perror("Initresource/Base_Name");
-		return;
-	}
-	name = BN;
-	Base_Context* BC = malloc(sizeof(Base_Context));
-	if (BC == NULL)
-	{
-		perror("Initresource/Base_Context");
-		return;
-	}
-	context = BC;
-
-	//加载文件
-	//Load_Resource(pc);  
-	printf("变长数组调试，暂停加载文件\n");
-}
+//void InitResource(Base_Name* name, Base_Context* context)
+//{
+//	Base_Name* BN = malloc(sizeof(Base_Name));
+//	if (BN == NULL)
+//	{
+//		perror("Initresource/Base_Name");
+//		return;
+//	}
+//	else
+//	{
+//		name = NULL;
+//		name = BN;
+//	}
+//	Base_Context* BC = malloc(sizeof(Base_Context));
+//	if (BC == NULL)
+//	{
+//		perror("Initresource/Base_Context");
+//		return;
+//	}
+//	context = BC;
+//
+//	//加载文件
+//	//Load_Resource(pc);  
+//	printf("变长数组调试，暂停加载文件\n");
+//}
 
 //加载文件
 //void Load_Resource(Date_Base* pc)
@@ -88,7 +92,7 @@ void InitResource(Base_Name* name, Base_Context* context)
 //}
 
 //录入数据 - 动态版本
-void AddResource(Base_Name* name, Base_Context* context)
+void AddResource(unsigned long** dn, unsigned long** dc)
 {
 	//确认容量
 	//CheckResource(pc);
@@ -115,22 +119,21 @@ void AddResource(Base_Name* name, Base_Context* context)
 				headlinecount = strlen(headline);
 				char* headlinepoint = headline;//字符串转为字符指针
 				Base_Name* BN = malloc(sizeof(Base_Name) + (headlinecount + 1) * sizeof(char));
+				if (BN == NULL)
+				{
+					perror("malloc/Base_Name* BN ");
+					return;
+				}
 				//结构体赋值
-				BN->sz = 1;
-				BN[BN->sz].year = year;
-				BN[BN->sz].month = month;
-				BN[BN->sz].day = day;
-				BN[BN->sz].sz = BN->sz;
-				BN[BN->sz].headlinecount = headlinecount;
-				strcpy(BN[BN->sz].headline, headlinepoint);
-				//realloc(name, sizeof(Base_Name) + (headlinecount + 1) * sizeof(char));
-				//if (sizeof(BN) != sizeof(name))
-				//{
-				//	perror("realloc/BN:name");
-				//	return;
-				//}
-				name = BN;
-				//name[name->sz].sz += 1;
+				int BN_sz = 0;//确定数组位置
+				BN[BN_sz].year = year;
+				BN[BN_sz].month = month;
+				BN[BN_sz].day = day;
+				BN[BN_sz].sz = BN_sz;
+				BN[BN_sz].headlinecount = headlinecount;
+				memcpy(BN[BN_sz].headline, headlinepoint, headlinecount + 1);
+				*(Date_Name_arr) = (unsigned long*)BN;//指针复制
+				BN = NULL;
 				break;
 			}
 			else
@@ -152,17 +155,17 @@ void AddResource(Base_Name* name, Base_Context* context)
 	contextcount = strlen(context_paragraph);
 	char* contextpoint = context_paragraph;
 	Base_Context* BC = malloc(sizeof(Base_Context) + (contextcount + 1) * sizeof(char));
-	BC->sz = 1;
-	BC[BC->sz].sz = BC->sz;
-	strcpy(BC[BC->sz].context_paragraph, contextpoint);
-	//realloc(context, sizeof(Base_Context) + (contextcount + 1) * sizeof(char));
-	//if (sizeof(BC) != sizeof(context))
-	//{
-	//	perror("realloc/BC:context");
-	//	return;
-	//}
-	context = BC;
-	//memcpy(context[context->sz].context_paragraph, contextpoint, contextcount);
+	if (BC == NULL)
+	{
+		perror("malloc/Base_Context* BC ");
+		return;
+	}
+	int BC_sz = 0;//确定数组位置
+	memcpy(BC[BC_sz].context_paragraph, contextpoint, contextcount + 1);
+	BC[BC_sz].sz = BC_sz;
+	BC[BC_sz].contextcount = contextcount;
+	*(Date_Context_arr) = (unsigned long*)BC;//指针复制
+	BC = NULL;
 	printf("          -----------------------------           \n");
 	printf("          |  成功录入，3秒后自动返回  |           \n");
 	printf("          -----------------------------           \n");
@@ -195,27 +198,45 @@ void AddResource(Base_Name* name, Base_Context* context)
 		//}
 
 //查询
-//void SeacrhResource(Date_Name* name, Date_Context* context)
-//{
-//	int i = 0;
-//	if (pc->sz == 0)
-//	{
-//		printf("尚未录入数据,3秒后自动返回。\n");
-//		Sleep(3000);
-//		return;
-//	}
-//	for (i = 0;i < pc->sz;i++)
-//	{
-//		printf("查询内容如下：\n");
-//		printf("[ 时 间 ]：%d年%d月%d日\t\t[ 标 题 ]：%s\n",
-//			pc->name_1[i].year,
-//			pc->name_1[i].month,
-//			pc->name_1[i].day,
-//			pc->name_1[i].headline);
-//		printf("[ 正 文 ]：%s\n",pc->context_1[i].context_paragraph);
-//	}
-//	system("pause");
-//}
+void SeacrhResource(unsigned long** dn, unsigned long** dc)
+{
+	int i = 0;
+	while (1)
+	{
+		for (i = 0; i < 3; i++)
+		{
+			Base_Name* BN = NULL;
+			BN = (Base_Name*)Date_Name_arr[i];//指针复制
+			printf("查询内容如下：\n");
+			printf("[ 时 间 ]：%d年%d月%d日\t\t[ 标 题 ]：%s\n",
+				BN->year,
+				BN->month,
+				BN->day,
+				BN->headline);
+			Base_Context* BC = NULL;
+			BC = (Base_Context*)Date_Context_arr[i];//指针复制
+			printf("[ 正 文 ]：%s\n", BC->context_paragraph);
+			system("pause");
+		}
+	}
+	/*if (pc->sz == 0)
+	{
+		printf("尚未录入数据,3秒后自动返回。\n");
+		Sleep(3000);
+		return;
+	}
+	for (i = 0;i < pc->sz;i++)
+	{
+		printf("查询内容如下：\n");
+		printf("[ 时 间 ]：%d年%d月%d日\t\t[ 标 题 ]：%s\n",
+			pc->name_1[i].year,
+			pc->name_1[i].month,
+			pc->name_1[i].day,
+			pc->name_1[i].headline);
+		printf("[ 正 文 ]：%s\n",pc->context_1[i].context_paragraph);
+	}
+	system("pause");*/
+}
 
 //保存文件
 //void SaveResource(Date_Base* pc)

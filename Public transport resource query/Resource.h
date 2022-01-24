@@ -35,6 +35,8 @@ typedef struct Base_Name
 	unsigned short headlinecount;
 	char headline[0];
 }Base_Name;
+unsigned long* Date_Name_arr[DEFAULT_SZ];//指针数组
+unsigned long** Date_Name;//指针地址
 
 //文本内容 存储结构
 typedef struct Base_Context
@@ -46,6 +48,8 @@ typedef struct Base_Context
 	unsigned short contextcount;
 	char context_paragraph[0];//每段内容
 }Base_Context;
+unsigned long* Date_Context_arr[DEFAULT_SZ];//指针数组
+unsigned long** Date_Context;//指针地址
 
 //线路 存储结构
 //typedef struct Date_BusLine
@@ -55,16 +59,16 @@ typedef struct Base_Context
 //}Date_BusLine;
 
 //结构初始化
-void InitResource(Base_Name* name, Base_Context* context);
+//void InitResource(Base_Name* name, Base_Context* context);
 
 ////加载文件
 //void Load_Resource(Date_Base* pc);
-//
-//录入数据
-void AddResource(Base_Name* name, Base_Context* context);
 
-////查询
-//void SeacrhResource(Date_Name* name, Date_Context* context);
+//录入数据
+void AddResource(unsigned long** dn, unsigned long** dc);
+
+//查询
+void SeacrhResource(unsigned long** dn, unsigned long** dc);
 
 ////检测增容
 //void CheckResource(Date_Base* pc);
