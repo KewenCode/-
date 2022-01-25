@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
+#include <time.h>
 
 #define YEAR_4 5
 #define MONTH_2 3
@@ -22,17 +23,29 @@
 #define DEFAULT_SZ 3//默认大小
 #define MAX 3
 
-
-//日期名称 存储结构
-typedef struct Base_Name
+//类型定义
+typedef struct Base_Main
 {
-	unsigned int id;
-	unsigned int sz;//记录当前有效信息数量
-	unsigned int capacity;//记录当前最大容量
+	char id[9];
 	unsigned short year;
 	unsigned short month;
 	unsigned short day;
 	unsigned short headlinecount;
+	unsigned short line;//记录行数
+	unsigned short contextcount;
+}Base_Main;
+//主结构
+typedef struct Base_Struct
+{
+	Base_Main* BM;//存放的信息空间
+	unsigned int sz;//记录已读取有效信息总量
+	unsigned int capacity;//目前malloc容量
+}Base_Struct;
+
+//日期名称 存储结构
+typedef struct Base_Name
+{
+	char id[9];
 	char headline[0];
 }Base_Name;
 unsigned long* Date_Name_arr[DEFAULT_SZ];//指针数组
@@ -41,11 +54,7 @@ unsigned long** Date_Name;//指针地址
 //文本内容 存储结构
 typedef struct Base_Context
 {
-	unsigned int sz;//记录当前有效信息数量
-	unsigned int capacity;//记录当前最大容量
-	unsigned int id;
-	unsigned short line;//记录行数
-	unsigned short contextcount;
+	char id[9];
 	char context_paragraph[0];//每段内容
 }Base_Context;
 unsigned long* Date_Context_arr[DEFAULT_SZ];//指针数组
@@ -59,16 +68,16 @@ unsigned long** Date_Context;//指针地址
 //}Date_BusLine;
 
 //结构初始化
-//void InitResource(Base_Name* name, Base_Context* context);
+void InitResource(Base_Struct* ptrq);
 
 ////加载文件
 //void Load_Resource(Date_Base* pc);
 
 //录入数据
-void AddResource(unsigned long** dn, unsigned long** dc);
+void AddResource(Base_Struct* ptrq, unsigned long** dn, unsigned long** dc);
 
 //查询
-void SeacrhResource(unsigned long** dn, unsigned long** dc);
+void SeacrhResource(Base_Struct* ptrq, unsigned long** dn, unsigned long** dc);
 
 ////检测增容
 //void CheckResource(Date_Base* pc);

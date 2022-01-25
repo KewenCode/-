@@ -63,10 +63,10 @@ int main()
 	int templeinput = 1;//公用input
 
 	//创建资源空间
-	//Base_Name Name_1;//资源名称
-	//Base_Context Context_1;//资源文本
+	Base_Struct ptrq;//资源名称
 	//初始化，申请空间
-	//InitResource(&Name_1,&Context_1);
+	InitResource(&ptrq);
+	//指针函数地址
 	unsigned long** Date_Name = Date_Name_arr;
 	unsigned long** Date_Context = Date_Context_arr;
 
@@ -80,7 +80,7 @@ int main()
 		case Search:
 			//查询
 			//function_underbuild();
-			SeacrhResource(Date_Name, Date_Context);
+			SeacrhResource(&ptrq, Date_Name, Date_Context);
 			system("cls");
 			break;
 		case Exit_Witnout_Saving:
@@ -107,7 +107,7 @@ int main()
 				case Add:
 					//添加数据
 					/*function_underbuild();*/
-					AddResource(Date_Name, Date_Context);
+					AddResource(&ptrq, Date_Name, Date_Context);
 					system("cls");
 					break;
 				case Out:
