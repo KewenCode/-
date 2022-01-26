@@ -64,11 +64,10 @@ int main()
 
 	//创建资源空间
 	Base_Struct ptrq;//资源名称
+	Date_Name_arr dna;//名称指针空间
+	Date_Context_arr dca;//内容指针空间
 	//初始化，申请空间
-	InitResource(&ptrq);
-	//指针函数地址
-	unsigned long** Date_Name = Date_Name_arr;
-	unsigned long** Date_Context = Date_Context_arr;
+	InitResource(&ptrq, &dna, &dca);
 
 	do
 	{
@@ -80,7 +79,7 @@ int main()
 		case Search:
 			//查询
 			//function_underbuild();
-			SeacrhResource(&ptrq, Date_Name, Date_Context);
+			SeacrhResource(&ptrq, &dna, &dca);
 			system("cls");
 			break;
 		case Exit_Witnout_Saving:
@@ -107,7 +106,7 @@ int main()
 				case Add:
 					//添加数据
 					/*function_underbuild();*/
-					AddResource(&ptrq, Date_Name, Date_Context);
+					AddResource(&ptrq, &dna, &dca);
 					system("cls");
 					break;
 				case Out:
