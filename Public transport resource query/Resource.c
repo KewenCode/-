@@ -27,23 +27,24 @@ void InitResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 	ptrq->capacity = DEFAULT_SZ;
 	ptrq->sz = 0;	
 	
-	Date_Name_arr* str = (Date_Name_arr*)malloc(sizeof(Date_Name_arr) + DEFAULT_SZ * sizeof(unsigned long));
-	if (str == NULL)
+	Date_Name_arr* str_dna = (Date_Name_arr*)malloc(sizeof(Date_Name_arr) + DEFAULT_SZ * sizeof(unsigned long));
+	if (str_dna == NULL)
 	{
 		perror("Initresource/Date_Name_arr*");
 		return;
 	}
-    str->capacity = DEFAULT_SZ;
-	str->sz = 0;
-	dna = str;
-	dca = (Date_Context_arr*)malloc(sizeof(Date_Context_arr) + DEFAULT_SZ * sizeof(unsigned long));
-	if (dca == NULL)
+    str_dna->capacity = DEFAULT_SZ;
+	str_dna->sz = 0;
+	*dna = *str_dna;
+	Date_Context_arr* str_dca = (Date_Context_arr*)malloc(sizeof(Date_Context_arr) + DEFAULT_SZ * sizeof(unsigned long));
+	if (str_dca == NULL)
 	{
 		perror("Initresource/Date_Context_arr*");
 		return;
 	}
-	dca->capacity = DEFAULT_SZ;
-	dca->sz = 0;
+	str_dca->capacity = DEFAULT_SZ;
+	str_dca->sz = 0;
+	*dca = *str_dca;
 	
 
 	//加载文件
@@ -122,7 +123,7 @@ void InitResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 {
 	//确认容量
-	//CheckResource(ptrq, dn, dc);
+	//CheckResource(ptrq, dna, dca);
 	printf("变长数组调试，暂停加载确认容量\n");
 	//结构体临时内容
 	char id[9] = { 0 };

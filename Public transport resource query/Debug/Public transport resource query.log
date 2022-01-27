@@ -1,9 +1,2 @@
-﻿  Prompttext.c
-  Resource.c
-D:\C语言\公交资源查询\Public transport resource query\Public transport resource query\Resource.c(25,3): warning C4033: “InitResource”必须返回值
-D:\C语言\公交资源查询\Public transport resource query\Public transport resource query\Resource.c(34,3): warning C4033: “InitResource”必须返回值
-D:\C语言\公交资源查询\Public transport resource query\Public transport resource query\Resource.c(43,3): warning C4033: “InitResource”必须返回值
-  test.c
-  正在生成代码...
-D:\C语言\公交资源查询\Public transport resource query\Public transport resource query\Resource.c(52): warning C4716: “InitResource”: 必须返回一个值
+﻿  Resource.c
   Public transport resource query.vcxproj -> D:\C语言\公交资源查询\Public transport resource query\Debug\Public transport resource query.exe
