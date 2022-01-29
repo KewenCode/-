@@ -63,9 +63,9 @@ int main()
 	int templeinput = 1;//公用input
 
 	//创建资源空间
-	Base_Struct ptrq;//资源名称
 	Date_Name_arr dna;//名称指针空间
 	Date_Context_arr dca;//内容指针空间
+	Base_Struct ptrq;//资源名称
 	//初始化，申请空间
 	InitResource(&ptrq, &dna, &dca);
 
@@ -84,7 +84,7 @@ int main()
 			break;
 		case Exit_Witnout_Saving:
 			//(不保存)退出
-			//Destorycontact(&Base_1);//销毁内存
+			Destorycontact(&ptrq, &dna, &dca);//销毁内存
 			break;
 		case Save:
 			//保存

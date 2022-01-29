@@ -25,27 +25,36 @@ void InitResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 		return;
 	}
 	ptrq->capacity = DEFAULT_SZ;
-	ptrq->sz = 0;	
-	
-	Date_Name_arr* str_dna = (Date_Name_arr*)malloc(sizeof(Date_Name_arr) + DEFAULT_SZ * sizeof(unsigned long));
-	if (str_dna == NULL)
+	ptrq->sz = 0;
+
+	dna->DN = (Date_Name*)malloc(DEFAULT_SZ * sizeof(Date_Name));	
+	if (dna->DN == NULL)
 	{
-		perror("Initresource/Date_Name_arr*");
+		perror("Initresource/Date_Name*");
 		return;
 	}
-    str_dna->capacity = DEFAULT_SZ;
-	str_dna->sz = 0;
-	*dna = *str_dna;
-	Date_Context_arr* str_dca = (Date_Context_arr*)malloc(sizeof(Date_Context_arr) + DEFAULT_SZ * sizeof(unsigned long));
-	if (str_dca == NULL)
+	dna->capacity = 0;
+	dna->sz = 0;
+	dca->DC = (Date_Context*)malloc(DEFAULT_SZ * sizeof(Date_Context));
+	if (dca->DC == NULL)
 	{
-		perror("Initresource/Date_Context_arr*");
+		perror("Initresource/Date_Context*");
 		return;
 	}
-	str_dca->capacity = DEFAULT_SZ;
-	str_dca->sz = 0;
-	*dca = *str_dca;
-	
+	dca->capacity = 0;
+	dca->sz = 0;
+	int i = 0;
+	for (i = 0; i < DEFAULT_SZ; i++)
+	{
+		dna->DN[i] = (unsigned long*)malloc(sizeof(unsigned long));
+		dna->capacity++;
+	}
+	for (i = 0; i < DEFAULT_SZ; i++)
+	{
+		dca->DC[i] = (unsigned long*)malloc(sizeof(unsigned long));
+		dca->capacity++;
+	}
+
 
 	//加载文件
 	//Load_Resource(pc);  
@@ -126,6 +135,7 @@ void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 	//CheckResource(ptrq, dna, dca);
 	printf("变长数组调试，暂停加载确认容量\n");
 	//结构体临时内容
+	int clear = 0;
 	char id[9] = { 0 };
 	unsigned short year = 0;
 	unsigned short month = 0;
@@ -135,10 +145,19 @@ void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 	unsigned short contextcount = 0;
 	char context_paragraph[TEXT_1000] = { 0 };
 	//赋值
-	printf("请输入 年 月 日 [例：20220101]：\n");
-	scanf("%4hu%2hu%2hu", &(year), &(month), &(day));
 	while (1)
 	{
+		printf("请输入 年 月 日 [例：20220101]：\n");
+		scanf("%4hu%2hu%2hu", &(year), &(month), &(day));
+		while ((clear = getchar()) != '\n' && clear != EOF);//清空输入缓冲区
+		//if (clear != 0)
+		//{
+		//	printf("          -----------------------------           \n");
+		//	printf("          输入超出规定大小，请确认输入！          \n");
+		//	printf("                2秒后返回输入界面                 \n");
+		//	printf("          -----------------------------           \n");
+		//	Sleep(2000);
+		//}
 		if (month < 13 && month > 0)
 		{
 			if (day > 0 && day < 32)
@@ -151,7 +170,6 @@ void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 				ptrq->BM[ptrq->sz].year = year;
 				ptrq->BM[ptrq->sz].month = month;
 				ptrq->BM[ptrq->sz].day = day;
-				ptrq->sz++;
 				//标题
 				printf("请输入标题：\n");
 				scanf("%s", headline);
@@ -166,51 +184,54 @@ void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 				ptrq->BM[ptrq->sz].headlinecount = headlinecount;
 				memcpy(BN[BN_sz].id, id, 9);
 				memcpy(BN[BN_sz].headline, headlinepoint, headlinecount + 1);
-				{
-					dna->Date_Name[dna->sz] = (unsigned long*)BN;//指针复制
-					dna->sz++;
-				}
+				dna->DN[dna->sz] = (unsigned long*)BN;//指针复制
+				dna->sz++;
 				BN = NULL;
+				//内容
+				printf("请输入内容：\n");
+				scanf("%s", context_paragraph);
+				contextcount = (unsigned short)strlen(context_paragraph);
+				char* contextpoint = context_paragraph;
+				Base_Context* BC = malloc(sizeof(Base_Context) + (contextcount + 1) * sizeof(char));
+				if (BC == NULL)
+				{
+					perror("malloc/Base_Context* BC ");
+					return;
+				}
+				int BC_sz = 0;//确定数组位置
+				ptrq->BM[ptrq->sz].contextcount = contextcount;
+				ptrq->sz++;
+				memcpy(BC[BC_sz].id, id, 9);
+				memcpy(BC[BC_sz].context_paragraph, contextpoint, contextcount + 1);
+				{
+					dca->DC[dca->sz] = (unsigned long*)BC;//指针复制
+					dca->sz++;
+				}
+				BC = NULL;
+				printf("          -----------------------------           \n");
+				printf("          |  成功录入，3秒后自动返回  |           \n");
+				printf("          -----------------------------           \n");
+				Sleep(3000);
 				break;
 			}
 			else
 			{
-				printf("日期非正常数据，请确认输入！\n3秒后返回管理界面\n");
-				Sleep(3000);
-				break;
+				printf("          -----------------------------           \n");
+				printf("           日期非正常数据，请确认输入！           \n");
+				printf("                2秒后返回输入界面                 \n");
+				printf("          -----------------------------           \n");
+				Sleep(2000);
 			}
 		}
 		else
 		{
-			printf("月份非正常数据，请确认输入！\n3秒后返回管理界面\n");
-			Sleep(3000);
-			break;
+			printf("          -----------------------------           \n");
+			printf("           月份非正常数据，请确认输入！           \n");
+			printf("                2秒后返回输入界面                 \n");
+			printf("          -----------------------------           \n");
+			Sleep(2000);
 		}
 	}
-	printf("请输入内容：\n");
-	scanf("%s", context_paragraph);
-	contextcount = (unsigned short)strlen(context_paragraph);
-	char* contextpoint = context_paragraph;
-	Base_Context* BC = malloc(sizeof(Base_Context) + (contextcount + 1) * sizeof(char));
-	if (BC == NULL)
-	{
-		perror("malloc/Base_Context* BC ");
-		return;
-	}
-	int BC_sz = 0;//确定数组位置
-	ptrq->BM[ptrq->sz].contextcount = contextcount;
-	memcpy(BC[BC_sz].id, id, 9);
-	memcpy(BC[BC_sz].context_paragraph, contextpoint, contextcount + 1);
-	//*(Date_Context_arr) = (unsigned long*)BC;//指针复制
-	{
-		dca->Date_Context[dca->sz] = (unsigned long*)BC;//指针复制
-		dca->sz++;
-	}
-	BC = NULL;
-	printf("          -----------------------------           \n");
-	printf("          |  成功录入，3秒后自动返回  |           \n");
-	printf("          -----------------------------           \n");
-	Sleep(3000);
 }
 
 //录入数据 - 链表尾插法
@@ -241,13 +262,21 @@ void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 //查询
 void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 {
-	int i = 0;
+	unsigned int i = 0;
 	while (1)
 	{
-		for (i = 0; i < 3; i++)
+		if (ptrq->sz == 0)
+		{
+			printf("          -----------------------------           \n");
+			printf("          |         无输入数据        |           \n");
+			printf("          -----------------------------           \n");
+			system("pause");
+			break;
+		}
+		for (i = 0; i < ptrq->sz; i++)
 		{
 			Base_Name* BN = NULL;
-			BN = (Base_Name*)dna->Date_Name[i];//指针复制
+			BN = (Base_Name*)dna->DN[i];//指针复制
 			printf("查询内容如下：\n");
 			printf("[ 时 间 ]：%d年%d月%d日\t\t[ 标 题 ]：%s\n",
 				ptrq->BM[i].year,
@@ -255,29 +284,15 @@ void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca
 				ptrq->BM[i].day,
 				BN->headline);
 			Base_Context* BC = NULL;
-			BC = (Base_Context*)dca->Date_Context[i];//指针复制
+			BC = (Base_Context*)dca->DC[i];//指针复制
 			printf("[ 正 文 ]：%s\n", BC->context_paragraph);
-			system("pause");
 		}
+		printf("          -----------------------------           \n");
+		printf("          |          输出完成         |           \n");
+		printf("          -----------------------------           \n");
+		system("pause");
 		break;
 	}
-	/*if (pc->sz == 0)
-	{
-		printf("尚未录入数据,3秒后自动返回。\n");
-		Sleep(3000);
-		return;
-	}
-	for (i = 0;i < pc->sz;i++)
-	{
-		printf("查询内容如下：\n");
-		printf("[ 时 间 ]：%d年%d月%d日\t\t[ 标 题 ]：%s\n",
-			pc->name_1[i].year,
-			pc->name_1[i].month,
-			pc->name_1[i].day,
-			pc->name_1[i].headline);
-		printf("[ 正 文 ]：%s\n",pc->context_1[i].context_paragraph);
-	}
-	system("pause");*/
 }
 
 //保存文件
@@ -398,12 +413,42 @@ void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca
 //}
 
 //销毁内存
-//void Destorycontact(Date_Base* pc)
-//{
-//	free(pc->name_1);
-//	pc->name_1 = NULL;
-//	free(pc->context_1);
-//	pc->context_1 = NULL;
-//	pc->sz = 0;
-//	pc->capacity = 0;
-//}
+void Destorycontact(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
+{
+	free(ptrq->BM);
+	ptrq->BM = NULL;
+	ptrq->capacity = 0;
+	ptrq->sz = 0;
+
+	unsigned int i = 0;
+	for (i = 0; i < dna->capacity; i++)
+	{
+		if (dna->DN[i] != NULL)
+		{
+			Base_Name* BN = NULL;
+			BN = (Base_Name*)dna->DN[i];//指针复制
+			free(BN);
+			dna->DN[i] = NULL;
+		}
+	}
+	for(i = 0; i < dca->capacity; i++)
+	{
+		if (dca->DC[i] != NULL)
+		{
+			Base_Context* BC = NULL;
+			BC = (Base_Context*)dca->DC[i];
+			free(BC);
+			dca->DC[i] = NULL;
+		}
+	}
+
+	dna->capacity = 0;
+	dna->sz = 0;
+	dca->capacity = 0;
+	dca->sz = 0;
+
+	free(dna->DN);
+	dna->DN = NULL;
+	free(dca->DC);
+	dca->DC = NULL;
+}

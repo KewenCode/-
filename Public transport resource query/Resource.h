@@ -2,7 +2,7 @@
 #pragma warning(disable : 6031)//忽略vs中scanf报错的nc行为
 #pragma warning(disable : 5105)//生成“已定义”的宏扩展具有未定义的行为
 
-#define FileVersion "V0.0.4.1-dev"
+#define FileVersion "V0.0.5.1-dev"
 #define ProductVersion "V0.0.1.0"
 
 #include <stdio.h>
@@ -48,11 +48,12 @@ typedef struct Base_Name
 	char id[9];
 	char headline[0];
 }Base_Name;
+typedef unsigned long* Date_Name;
 typedef struct Date_Name_arr
 {
 	unsigned int sz;//记录已读取有效信息总量
 	unsigned int capacity;//目前malloc容量
-	unsigned long* Date_Name[0];//指针数组
+	Date_Name* DN;
 }Date_Name_arr;
 
 //文本内容 存储结构
@@ -61,11 +62,12 @@ typedef struct Base_Context
 	char id[9];
 	char context_paragraph[0];//每段内容
 }Base_Context;
+typedef unsigned long* Date_Context;
 typedef struct Date_Context_arr
 {
 	unsigned int sz;//记录已读取有效信息总量
 	unsigned int capacity;//目前malloc容量
-	unsigned long* Date_Context[0];//指针数组
+	Date_Context* DC;
 }Date_Context_arr;
 
 //线路 存储结构
@@ -98,6 +100,6 @@ void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca
 //
 ////删除内容
 //void DelateResource(Date_Base* pc);
-//
-////销毁内存
-//void Destorycontact(Date_Base* pc);
+
+//销毁内存
+void Destorycontact(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);
