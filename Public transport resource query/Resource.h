@@ -2,7 +2,7 @@
 #pragma warning(disable : 6031)//忽略vs中scanf报错的nc行为
 #pragma warning(disable : 5105)//生成“已定义”的宏扩展具有未定义的行为
 
-#define FileVersion "V0.0.5.1-dev"
+#define FileVersion "V0.0.5.2-dev"
 #define ProductVersion "V0.0.1.0"
 
 #include <stdio.h>
@@ -90,7 +90,7 @@ void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);
 void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);
 
 //检测增容
-//void CheckResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);
+void CheckResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);
 
 ////保存文件
 //void SaveResource(Date_Base* pc);

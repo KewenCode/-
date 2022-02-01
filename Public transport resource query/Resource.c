@@ -96,44 +96,62 @@ void InitResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 //}
 
 //增容检测
-//void CheckResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
-//{
-//	if (ptrq->sz == ptrq->capacity)
-//	{
-//		Base_Main* ptr = (Base_Main*)realloc(ptrq->BM, (ptrq->capacity + DEFAULT_SZ) * sizeof(Base_Main));
-//		if (ptr != NULL)
-//		{
-//			ptrq->BM = ptr;
-//			ptrq->capacity += DEFAULT_SZ;
-//			printf("增容成功！\n");
-//		}
-//		else
-//		{
-//			perror("CheckResource/Base_Struct*");
-//			printf("增容失败！\n3秒后继续\n");
-//			Sleep(3000);
-//			return;
-//		}
-//	}
-//	while (1)
-//	{
-//		int i = 1;
-//		if (*dn[DEFAULT_SZ * i - 1] != NULL)
-//		{
-//
-//			int t = 0;
-//
-//		}
-//		i++;
-//	}
-//}
+void CheckResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
+{
+	if (ptrq->sz == ptrq->capacity && dna->sz == dna->capacity && dca->sz == dca->capacity)
+	{
+		Base_Main* ptr = (Base_Main*)realloc(ptrq->BM, (ptrq->capacity + DEFAULT_SZ) * sizeof(Base_Main));
+		Date_Name* ptr1 = (Date_Name*)realloc(dna->DN, (dna->capacity + DEFAULT_SZ) * sizeof(Date_Name));
+		Date_Context* ptr2 = (Date_Context*)realloc(dca->DC, (dca->capacity + DEFAULT_SZ) * sizeof(Date_Context));
+
+		if (ptr != NULL && ptr1 != NULL && ptr2 != NULL)
+		{
+			ptrq->BM = ptr;
+			ptrq->capacity += DEFAULT_SZ;
+			dna->DN = ptr1;
+			dca->DC = ptr2;
+
+			unsigned int i = 0;
+			for (i = ptrq->sz; i < ptrq->capacity; i++)
+			{
+				dna->DN[i] = (unsigned long*)malloc(sizeof(unsigned long));
+				dna->capacity++;
+				dca->DC[i] = (unsigned long*)malloc(sizeof(unsigned long));
+				dca->capacity++;
+			}
+
+			printf("          -----------------------------           \n");
+			printf("          |         增容成功！        |           \n");
+			printf("          -----------------------------           \n");
+		}
+		else
+		{
+			perror("CheckResource/ptr");
+			printf("          -----------------------------           \n");
+			printf("           开辟增容空间失败！存在空指针           \n");
+			printf("                2秒后返回输入界面                 \n");
+			printf("          -----------------------------           \n");
+			Sleep(2000);
+			return;
+		}
+	}
+	else if (ptrq->sz != dna->sz && ptrq->sz != dca->sz)
+	{
+		perror("CheckResource/NotSame");
+		printf("          -----------------------------           \n");
+		printf("              增容失败，容量不一致！              \n");
+		printf("                2秒后返回输入界面                 \n");
+		printf("          -----------------------------           \n");
+		Sleep(2000);
+		return;
+	}
+}
 
 //录入数据 - 动态版本
 void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 {
 	//确认容量
-	//CheckResource(ptrq, dna, dca);
-	printf("变长数组调试，暂停加载确认容量\n");
+	CheckResource(ptrq, dna, dca);
 	//结构体临时内容
 	int clear = 0;
 	char id[9] = { 0 };
@@ -209,9 +227,9 @@ void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 				}
 				BC = NULL;
 				printf("          -----------------------------           \n");
-				printf("          |  成功录入，3秒后自动返回  |           \n");
+				printf("          |         成功录入！        |           \n");
 				printf("          -----------------------------           \n");
-				Sleep(3000);
+				system("pause");
 				break;
 			}
 			else
@@ -233,31 +251,6 @@ void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 		}
 	}
 }
-
-//录入数据 - 链表尾插法
-		//void AddResource_LinkedList(Date_Base** resource)//resource是头指针
-		//{
-		//	Date_Base* pc = NULL;
-		//	Date_Base* temp = NULL;
-		//	static Date_Base* tail = NULL;//设置空指针
-		//	pc = (Date_Base*)malloc(sizeof(struct Date_Base));
-		//	if (pc = NULL)
-		//	{
-		//		perror("addinfo");
-		//		exit(1);
-		//	}
-		//	AddResource(pc);
-		//	if (*resource != NULL)
-		//	{
-		//		tail->next = pc;//静态指向最后一位函数
-		//		pc->next = NULL;
-		//	}
-		//	else
-		//	{
-		//		*resource = pc;
-		//		pc->next = NULL;
-		//	}
-		//}
 
 //查询
 void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
@@ -288,7 +281,10 @@ void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca
 			printf("[ 正 文 ]：%s\n", BC->context_paragraph);
 		}
 		printf("          -----------------------------           \n");
-		printf("          |          输出完成         |           \n");
+		printf("                     输出完成                     \n");
+		printf("               总计输出 ");
+		printf("%d", i);
+		printf(" 个数据     \n");
 		printf("          -----------------------------           \n");
 		system("pause");
 		break;
