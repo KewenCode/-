@@ -160,8 +160,6 @@ void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 	unsigned short day = 0;
 	unsigned short headlinecount = 0;
 	char headline[TEXT_200] = { 0 };
-	unsigned short contextcount = 0;
-	char context_paragraph[TEXT_1000] = { 0 };
 	//赋值
 	while (1)
 	{
@@ -206,26 +204,30 @@ void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 				dna->sz++;
 				BN = NULL;
 				//内容
-				printf("请输入内容：\n");
-				scanf("%s", context_paragraph);
-				contextcount = (unsigned short)strlen(context_paragraph);
-				char* contextpoint = context_paragraph;
-				Base_Context* BC = malloc(sizeof(Base_Context) + (contextcount + 1) * sizeof(char));
-				if (BC == NULL)
-				{
-					perror("malloc/Base_Context* BC ");
-					return;
-				}
-				int BC_sz = 0;//确定数组位置
-				ptrq->BM[ptrq->sz].contextcount = contextcount;
-				ptrq->sz++;
-				memcpy(BC[BC_sz].id, id, 9);
-				memcpy(BC[BC_sz].context_paragraph, contextpoint, contextcount + 1);
-				{
-					dca->DC[dca->sz] = (unsigned long*)BC;//指针复制
-					dca->sz++;
-				}
-				BC = NULL;
+				AddResource_Context(ptrq, dca, id);
+				//老结构
+				//printf("请输入内容：\n");
+				//scanf("%s", context_paragraph);
+				//contextcount = (unsigned short)strlen(context_paragraph);
+				//char* contextpoint = context_paragraph;
+				//Base_Context* BC = malloc(sizeof(Base_Context) + (contextcount + 1) * sizeof(char));
+				//if (BC == NULL)
+				//{
+				//	perror("malloc/Base_Context* BC ");
+				//	return;
+				//}
+				//int BC_sz = 0;//确定数组位置
+				//ptrq->BM[ptrq->sz].contextcount = contextcount;
+				//ptrq->sz++;
+				//memcpy(BC[BC_sz].id, id, 9);
+				//memcpy(BC[BC_sz].context_paragraph, contextpoint, contextcount + 1);
+				//{
+				//	dca->DC[dca->sz] = (unsigned long*)BC;//指针复制
+				//	dca->sz++;
+				//}
+				//BC = NULL;
+
+
 				printf("          -----------------------------           \n");
 				printf("          |         成功录入！        |           \n");
 				printf("          -----------------------------           \n");
@@ -250,6 +252,46 @@ void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 			Sleep(2000);
 		}
 	}
+}
+
+//录入数据 - 文本
+void AddResource_Context(Base_Struct* ptrq, Date_Context_arr* dca, char* id)
+{
+	unsigned short contextcount = 0;
+	char context_paragraph[TEXT_1000] = { 0 };
+	char id_line[11] = { 0 };
+	memcpy(id_line, id, 9);
+	int lines = 1;//确定行数
+	int count = 0;//数字数
+	Base_Context* BC = malloc(sizeof(Base_Context));
+	printf("请输入内容：\n");
+	do
+	{
+		printf("第%d行:", lines);
+		scanf("%s", context_paragraph);
+		if (strcmp(context_paragraph, "quit") == 0)
+		{
+			break;
+		}
+		contextcount = (unsigned short)strlen(context_paragraph);
+		char* contextpoint = context_paragraph;
+			Base_Context* str = realloc(BC, sizeof(BC) + (contextcount + 1) * sizeof(char));
+		if (str == NULL)
+		{
+			perror("malloc/Base_Context* BC ");
+			break;
+		}	
+		BC = str;
+		strcat(id_line, (char*)lines);
+		memcpy(BC[lines].id, id_line, 11);
+		memcpy(BC[lines].context_paragraph, contextpoint, contextcount + 1);
+		lines++;
+	} while (1);
+	ptrq->BM[ptrq->sz].contextcount = count;
+	ptrq->sz++;
+	dca->DC[dca->sz] = (unsigned long*)BC;//指针复制
+	dca->sz++;
+	BC = NULL;
 }
 
 //查询
@@ -282,9 +324,7 @@ void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca
 		}
 		printf("          -----------------------------           \n");
 		printf("                     输出完成                     \n");
-		printf("               总计输出 ");
-		printf("%d", i);
-		printf(" 个数据     \n");
+		printf("               总计输出 %d 个数据\n", i);
 		printf("          -----------------------------           \n");
 		system("pause");
 		break;
@@ -314,52 +354,57 @@ void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca
 //	//void function_over();//测试功能
 //}
 
-//static int FindHeadlineResource(Date_Base* pc, char Headline[])
-//{
-//	int i = 0;
-//	for (i = 0;i < pc->sz;i++)
-//	{
-//		if (strcmp(pc->name_1[i].headline, Headline) == 0)
-//		{
-//			return i;
-//		}
-//	}
-//	return -1;//找不到
-//}
+static int FindHeadlineResource(Date_Name_arr* pc, char Headline[])
+{
+	unsigned int i = 0;
+	for (i = 0; i < pc->sz; i++)
+	{
+		Base_Name* BN = NULL;
+		BN = (Base_Name*)pc->DN[i];//指针复制
+		if (strcmp(BN->headline, Headline) == 0)
+		{
+			return i;
+		}
+	}
+	return -1;//找不到
+}
 //删除内容
-//void DelateResource(Date_Base* pc)
-//{
-//	char Headline[TEXT_200];
-//	if (pc->sz == 0)
-//	{
-//		printf("未记录内容,3秒后自动返回。\n");
-//		Sleep(3000);
-//		return;
-//	}
-//	printf("请输入要删除的内容标题：");
-//	scanf("%s", Headline);
-//	//查找对应内容
-//	int pos = FindHeadlineResource(pc, Headline);
-//	if (pos == -1)
-//	{
-//		printf("未找到相关内容,3秒后自动返回。\n");
-//		Sleep(3000);
-//		return;
-//	}
-//	//删除
-//	int i = 0;
-//	for (i = pos;i < pc->sz;i++)
-//	{
-//		pc->name_1[i] = pc->name_1[i + 1];
-//		pc->context_1[i] = pc->context_1[i + 1];
-//		pc->sz--;
-//	}
-//	printf("删除成功,3秒后自动返回。\n");
-//	Sleep(3000);
-//}
+void DelateResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
+{
+	char Headline[TEXT_200];
+	if (ptrq->sz == 0)
+	{
+		printf("未记录内容,3秒后自动返回。\n");
+		Sleep(3000);
+		return;
+	}
+	printf("请输入要删除的内容标题：");
+	scanf("%s", Headline);
+	//查找对应内容
+	int pos = FindHeadlineResource(dna, Headline);
+	if (pos == -1)
+	{
+		printf("未找到相关内容,3秒后自动返回。\n");
+		Sleep(3000);
+		return;
+	}
+	//删除
+	unsigned int i = 0;
+	for (i = pos; i < ptrq->sz; i++)
+	{
+		ptrq->BM[i] = ptrq->BM[i + 1];
+		dca->DC[i] = dca->DC[i + 1];
+		dna->DN[i] = dna->DN[i + 1];
+	}
+	ptrq->sz--;
+	dca->sz--;
+	dna->sz--;
+	printf("删除成功,3秒后自动返回。\n");
+	Sleep(3000);
+}
 
 //修改文件
-//void ModityResource(Date_Base* pc)
+//void ModifyResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 //{
 //	char Headline[TEXT_200];
 //	printf("请输入要修改的标题名称:");

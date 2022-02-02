@@ -26,9 +26,9 @@ void input_error()
 	printf(" \n");
 	printf("          -----------------------------           \n");
 	printf("          |   输入错误，请重新输入！  |           \n");
-	printf("          |       3秒后自动返回       |           \n");
+	printf("          |       2秒后自动返回       |           \n");
 	printf("          -----------------------------           \n");
-	Sleep(3000);
+	Sleep(2000);
 	system("cls");
 }
 

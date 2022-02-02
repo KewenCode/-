@@ -59,7 +59,7 @@ typedef struct Date_Name_arr
 //文本内容 存储结构
 typedef struct Base_Context
 {
-	char id[9];
+	char id[11];
 	char context_paragraph[0];//每段内容
 }Base_Context;
 typedef unsigned long* Date_Context;
@@ -86,20 +86,24 @@ void InitResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);
 //录入数据
 void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);
 
+//录入数据 - 文本
+void AddResource_Context(Base_Struct* ptrq, Date_Context_arr* dca, char* id);
+
 //查询
 void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);
 
 //检测增容
 void CheckResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);
 
-////保存文件
+//保存文件
 //void SaveResource(Date_Base* pc);
-//
-////修改文件
-//void ModityResource(Date_Base* pc);
-//
-////删除内容
-//void DelateResource(Date_Base* pc);
+
+//修改文件
+//void ModifyResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);
+
+//删除内容
+void DelateResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);
 
 //销毁内存
 void Destorycontact(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);
+

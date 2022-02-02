@@ -58,8 +58,8 @@ enum Option_menu_1
 int main()
 {
 	//初始化输入值
-	int input_1 = 0;
-	int input_1_1 = 0;
+	int input_1 = 99;
+	int input_1_1 = 99;
 	int templeinput = 1;//公用input
 
 	//创建资源空间
@@ -76,25 +76,21 @@ int main()
 		scanf("%d", &input_1);
 		switch (input_1)
 		{
-		case Search:
-			//查询
+		case Search: //查询
 			//function_underbuild();
 			SeacrhResource(&ptrq, &dna, &dca);
 			system("cls");
 			break;
-		case Exit_Witnout_Saving:
-			//(不保存)退出
+		case Exit_Witnout_Saving: //(不保存)退出
 			Destorycontact(&ptrq, &dna, &dca);//销毁内存
 			break;
-		case Save:
-			//保存
-			//function_underbuild();
+		case Save: //保存
+			function_underbuild();
 			//SaveResource(&Base_1);
-			//Destorycontact(&Base_1);//销毁内存
+			Destorycontact(&ptrq, &dna, &dca);
 			input_1 = 0;//转到退出
 			break;
-		case Manage_Function:
-			//进入 管理功能 目录
+		case Manage_Function: //进入 管理功能 目录
 			system("cls");
 			do
 			{
@@ -103,45 +99,38 @@ int main()
 				scanf("%d", &input_1_1);
 				switch (input_1_1)
 				{
-				case Add:
-					//添加数据
-					/*function_underbuild();*/
+				case Add: //添加数据
 					AddResource(&ptrq, &dna, &dca);
 					system("cls");
 					break;
-				case Out:
-					//导出数据
+				case Out: //导出数据
 					function_underbuild();
 					system("cls");
 					break;
-				case Change:
-					//修改数据
-					function_underbuild();
-					//ModityResource(&Base_1);
+				case Change: //修改数据
+					//ModifyResource(&ptrq, &dna, &dca);
 					system("cls");
 					break;
-				case Delete:
-					//删除数据
-					function_underbuild();
-					//DelateResource(&Base_1);
+				case Delete: //删除数据
+					DelateResource(&ptrq, &dna, &dca);
 					system("cls");
 					break;
-				case Back_menu_1:
-					//返回上级目录
+				case Back_menu_1: //返回上级目录
 					system("cls");
 					break;
 				default:
+					setbuf(stdin, NULL);//清空输入缓存区
 					input_error();
 					break;
 				}
 			} while (input_1_1);
 			break;
-		case About:
-			//关于
+		case About: //关于
 			function_About();
 			system("cls");
 			break;
 		default:
+			setbuf(stdin, NULL);//清空输入缓存区
 			input_error();
 			break;
 		}
