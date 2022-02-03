@@ -32,7 +32,7 @@ typedef struct Base_Main
 	unsigned short day;
 	unsigned short headlinecount;
 	unsigned short line;//记录行数
-	unsigned short contextcount;
+	unsigned short contextcount;//字数
 }Base_Main;
 //主结构
 typedef struct Base_Struct
@@ -62,6 +62,15 @@ typedef struct Base_Context
 	char id[11];
 	char context_paragraph[0];//每段内容
 }Base_Context;
+//
+typedef unsigned long* Base_Context_List;
+typedef struct Base_Context_arr
+{
+	Base_Context_List* BCL;
+	unsigned short line;//记录行数
+	Base_Context_arr* Next;
+}Base_Context_arr;
+//储存Base_Context指针
 typedef unsigned long* Date_Context;
 typedef struct Date_Context_arr
 {
@@ -78,19 +87,19 @@ typedef struct Date_Context_arr
 //}Date_BusLine;
 
 //结构初始化
-void InitResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);
+void InitResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca, Base_Context_arr* bca);
 
 ////加载文件
 //void Load_Resource(Date_Base* pc);
 
 //录入数据
-void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);
+void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca, Base_Context_arr* bca);
 
 //录入数据 - 文本
-void AddResource_Context(Base_Struct* ptrq, Date_Context_arr* dca, char* id);
+void AddResource_Context(Base_Struct* ptrq, Date_Context_arr* dca, Base_Context_arr* bca, char* id);
 
 //查询
-void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);
+void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca, Base_Context_arr* bca);
 
 //检测增容
 void CheckResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);

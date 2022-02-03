@@ -16,7 +16,7 @@ char* Randomid(char* dst)
 
 
 //结构初始化 - 动态版本
-void InitResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
+void InitResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca, Base_Context_arr* bca)
 {
 	ptrq->BM = (Base_Main*)malloc(DEFAULT_SZ * sizeof(Base_Main));
 	if (ptrq->BM == NULL)
@@ -35,6 +35,7 @@ void InitResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 	}
 	dna->capacity = 0;
 	dna->sz = 0;
+
 	dca->DC = (Date_Context*)malloc(DEFAULT_SZ * sizeof(Date_Context));
 	if (dca->DC == NULL)
 	{
@@ -43,14 +44,22 @@ void InitResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 	}
 	dca->capacity = 0;
 	dca->sz = 0;
+
+	bca->BCL = (Base_Context_List*)malloc(sizeof(Base_Context_List));//默认一行
+	if (bca->BCL == NULL)
+	{
+		perror("Initresource/Base_Context_arr*");
+		return;
+	}
+	bca->line = 0;
+	bca->Next = NULL;
+	bca->BCL[bca->line] = (unsigned long*)malloc(sizeof(unsigned long));
+
 	int i = 0;
 	for (i = 0; i < DEFAULT_SZ; i++)
 	{
 		dna->DN[i] = (unsigned long*)malloc(sizeof(unsigned long));
 		dna->capacity++;
-	}
-	for (i = 0; i < DEFAULT_SZ; i++)
-	{
 		dca->DC[i] = (unsigned long*)malloc(sizeof(unsigned long));
 		dca->capacity++;
 	}
@@ -148,7 +157,7 @@ void CheckResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 }
 
 //录入数据 - 动态版本
-void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
+void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca, Base_Context_arr* bca)
 {
 	//确认容量
 	CheckResource(ptrq, dna, dca);
@@ -204,7 +213,7 @@ void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 				dna->sz++;
 				BN = NULL;
 				//内容
-				AddResource_Context(ptrq, dca, id);
+				AddResource_Context(ptrq, dca, bca, id);
 				//老结构
 				//printf("请输入内容：\n");
 				//scanf("%s", context_paragraph);
@@ -255,15 +264,16 @@ void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
 }
 
 //录入数据 - 文本
-void AddResource_Context(Base_Struct* ptrq, Date_Context_arr* dca, char* id)
+void AddResource_Context(Base_Struct* ptrq, Date_Context_arr* dca, Base_Context_arr* bca, char* id)
 {
+
 	unsigned short contextcount = 0;
 	char context_paragraph[TEXT_1000] = { 0 };
 	char id_line[11] = { 0 };
-	memcpy(id_line, id, 9);
-	int lines = 1;//确定行数
+	int lines = 0;//确定行数
 	int count = 0;//数字数
-	Base_Context* BC = malloc(sizeof(Base_Context));
+	Base_Context_arr* head;
+
 	printf("请输入内容：\n");
 	do
 	{
@@ -273,29 +283,61 @@ void AddResource_Context(Base_Struct* ptrq, Date_Context_arr* dca, char* id)
 		{
 			break;
 		}
+		if (lines != 0)
+		{
+			Base_Context_List* str = realloc(bca->BCL, sizeof(Base_Context_List) * (lines + 1));
+			if (str == NULL)
+			{
+				perror("Initresource/Base_Context_arr*_realloc");
+				return;
+			}
+			bca->BCL = str;
+			str = NULL;
+			bca->BCL[bca->line + 1] = (unsigned long*)malloc(sizeof(unsigned long));
+		}
 		contextcount = (unsigned short)strlen(context_paragraph);
+		count = contextcount + count;//字数统计
 		char* contextpoint = context_paragraph;
-			Base_Context* str = realloc(BC, sizeof(BC) + (contextcount + 1) * sizeof(char));
-		if (str == NULL)
+		Base_Context* BC = malloc(sizeof(Base_Context) + (contextcount + 1) * sizeof(char));
+		if (BC == NULL)
 		{
 			perror("malloc/Base_Context* BC ");
 			break;
-		}	
-		BC = str;
-		strcat(id_line, (char*)lines);
-		memcpy(BC[lines].id, id_line, 11);
-		memcpy(BC[lines].context_paragraph, contextpoint, contextcount + 1);
+		}
+		sprintf(id_line, "%s%d", id, lines);
+		memcpy(BC[0].id, id_line, 11);
+		memcpy(BC[0].context_paragraph, contextpoint, contextcount + 1);
+		bca->line = lines;
+		bca->BCL[bca->line] = (unsigned long*)BC;//单行指针复制
+		
+		BC = NULL;
 		lines++;
-	} while (1);
+	//} while (1);
+	//bca->Next = head;
+	//head = bca;
+
+	////链表逆序
+	//Base_Context_arr* beg;
+	//Base_Context_arr* end;
+	//beg = head;
+	//end = head->Next;
+	//while (end != NULL)
+	//{
+	//	beg->Next = end->Next;
+	//	end->Next = head;
+	//	head = end;
+	//	end = beg->Next;
+	//}
+
 	ptrq->BM[ptrq->sz].contextcount = count;
+	ptrq->BM[ptrq->sz].line = lines - 1;
 	ptrq->sz++;
-	dca->DC[dca->sz] = (unsigned long*)BC;//指针复制
+	dca->DC[dca->sz] = (unsigned long*)head;//指针复制
 	dca->sz++;
-	BC = NULL;
 }
 
 //查询
-void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca)
+void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca, Base_Context_arr* bca)
 {
 	unsigned int i = 0;
 	while (1)
@@ -310,6 +352,7 @@ void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca
 		}
 		for (i = 0; i < ptrq->sz; i++)
 		{
+			int j = 0;
 			Base_Name* BN = NULL;
 			BN = (Base_Name*)dna->DN[i];//指针复制
 			printf("查询内容如下：\n");
@@ -318,9 +361,15 @@ void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca
 				ptrq->BM[i].month,
 				ptrq->BM[i].day,
 				BN->headline);
+			printf("[ 正 文 ]：\n");
 			Base_Context* BC = NULL;
-			BC = (Base_Context*)dca->DC[i];//指针复制
-			printf("[ 正 文 ]：%s\n", BC->context_paragraph);
+			Base_Context_arr* BCA = NULL;
+			BCA = (Base_Context_arr*)dca->DC[i];//指针复制
+			for (j = 0; j <= ptrq->BM[i].line; j++)
+			{
+				BC = (Base_Context*)bca->BCL[j];
+				printf("第%d行：%s\n", j, BC->context_paragraph);
+			}
 		}
 		printf("          -----------------------------           \n");
 		printf("                     输出完成                     \n");
