@@ -24,6 +24,9 @@
     <ClCompile Include="Resource.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="temper.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Prompttext.h">

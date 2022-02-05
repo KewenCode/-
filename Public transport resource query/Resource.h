@@ -2,7 +2,7 @@
 #pragma warning(disable : 6031)//忽略vs中scanf报错的nc行为
 #pragma warning(disable : 5105)//生成“已定义”的宏扩展具有未定义的行为
 
-#define FileVersion "V0.0.5.2-dev"
+#define FileVersion "V0.0.6.0-dev"
 #define ProductVersion "V0.0.1.0"
 
 #include <stdio.h>
@@ -66,14 +66,14 @@ typedef struct Base_Context
 typedef unsigned long* Base_Context_List;
 typedef struct Base_Context_arr
 {
-	Base_Context_List* BCL;
-	unsigned short line;//记录行数
-	Base_Context_arr* Next;
+	unsigned short line;//临时记录行数
+	Base_Context_List BCL[0];
 }Base_Context_arr;
 //储存Base_Context指针
 typedef unsigned long* Date_Context;
 typedef struct Date_Context_arr
 {
+	unsigned short alline;//记录行数
 	unsigned int sz;//记录已读取有效信息总量
 	unsigned int capacity;//目前malloc容量
 	Date_Context* DC;
@@ -87,19 +87,19 @@ typedef struct Date_Context_arr
 //}Date_BusLine;
 
 //结构初始化
-void InitResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca, Base_Context_arr* bca);
+void InitResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca, Base_Context_arr** bca);
 
 ////加载文件
 //void Load_Resource(Date_Base* pc);
 
 //录入数据
-void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca, Base_Context_arr* bca);
+void AddResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca, Base_Context_arr** bca);
 
 //录入数据 - 文本
-void AddResource_Context(Base_Struct* ptrq, Date_Context_arr* dca, Base_Context_arr* bca, char* id);
+void AddResource_Context(Base_Struct* ptrq, Date_Context_arr* dca, Base_Context_arr** bca, char* id);
 
 //查询
-void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca, Base_Context_arr* bca);
+void SeacrhResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca, Base_Context_arr** bca);
 
 //检测增容
 void CheckResource(Base_Struct* ptrq, Date_Name_arr* dna, Date_Context_arr* dca);

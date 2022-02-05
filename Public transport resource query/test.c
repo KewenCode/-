@@ -65,7 +65,7 @@ int main()
 	//创建资源空间
 	Date_Name_arr dna;//名称指针空间
 	Date_Context_arr dca;//内容指针空间
-	Base_Context_arr bca;
+	Base_Context_arr* bca = NULL;
 	Base_Struct ptrq;//资源名称
 	//初始化，申请空间
 	InitResource(&ptrq, &dna, &dca, &bca);
@@ -101,7 +101,7 @@ int main()
 				switch (input_1_1)
 				{
 				case Add: //添加数据
-					AddResource(&ptrq, &dna, &dca, &bca, &bca);
+					AddResource(&ptrq, &dna, &dca, &bca);
 					system("cls");
 					break;
 				case Out: //导出数据

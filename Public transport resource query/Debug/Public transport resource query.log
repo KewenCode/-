@@ -1,6 +1,2 @@
-﻿  Prompttext.c
-  Resource.c
-  test.c
-D:\C语言\公交资源查询\Public transport resource query\Public transport resource query\test.c(104,43): warning C4020: “AddResource”: 实参太多
-  正在生成代码...
+﻿  Resource.c
   Public transport resource query.vcxproj -> D:\C语言\公交资源查询\Public transport resource query\Debug\Public transport resource query.exe

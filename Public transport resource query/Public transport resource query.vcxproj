@@ -142,6 +142,7 @@
   <ItemGroup>
     <ClCompile Include="Prompttext.c" />
     <ClCompile Include="Resource.c" />
+    <ClCompile Include="temper.c" />
     <ClCompile Include="test.c" />
   </ItemGroup>
   <ItemGroup>
