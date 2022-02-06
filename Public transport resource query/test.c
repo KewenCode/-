@@ -63,12 +63,11 @@ int main()
 	int templeinput = 1;//公用input
 
 	//创建资源空间
-	Date_Name_arr dna;//名称指针空间
-	Date_Context_arr dca;//内容指针空间
-	Base_Context_arr* bca = NULL;
+	DN_SingleList* DN_sl = NULL;//名称指针空间
+	BC_SingleList* BC_sl = NULL;//内容指针空间
 	Base_Struct ptrq;//资源名称
 	//初始化，申请空间
-	InitResource(&ptrq, &dna, &dca, &bca);
+	InitResource(&ptrq, &DN_sl, &BC_sl);
 
 	do
 	{
@@ -79,16 +78,16 @@ int main()
 		{
 		case Search: //查询
 			//function_underbuild();
-			SeacrhResource(&ptrq, &dna, &dca, &bca);
+			SeacrhResource(&ptrq, &DN_sl, &BC_sl);
 			system("cls");
 			break;
 		case Exit_Witnout_Saving: //(不保存)退出
-			Destorycontact(&ptrq, &dna, &dca);//销毁内存
+			Destorycontact(&ptrq, &DN_sl, &BC_sl);//销毁内存
 			break;
 		case Save: //保存
 			function_underbuild();
 			//SaveResource(&Base_1);
-			Destorycontact(&ptrq, &dna, &dca);
+			Destorycontact(&ptrq, &DN_sl, &BC_sl);
 			input_1 = 0;//转到退出
 			break;
 		case Manage_Function: //进入 管理功能 目录
@@ -101,7 +100,7 @@ int main()
 				switch (input_1_1)
 				{
 				case Add: //添加数据
-					AddResource(&ptrq, &dna, &dca, &bca);
+					AddResource(&ptrq, &DN_sl, &BC_sl);
 					system("cls");
 					break;
 				case Out: //导出数据
@@ -109,11 +108,11 @@ int main()
 					system("cls");
 					break;
 				case Change: //修改数据
-					//ModifyResource(&ptrq, &dna, &dca);
+					//ModifyResource(&ptrq, &DN_sl, &BC_sl);
 					system("cls");
 					break;
 				case Delete: //删除数据
-					DelateResource(&ptrq, &dna, &dca);
+					//DelateResource(&ptrq, &DN_sl, &BC_sl);
 					system("cls");
 					break;
 				case Back_menu_1: //返回上级目录
