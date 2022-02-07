@@ -60,7 +60,7 @@ int main()
 	//初始化输入值
 	int input_1 = 99;
 	int input_1_1 = 99;
-	int templeinput = 1;//公用input
+	//int templeinput = 1;//公用input
 
 	//创建资源空间
 	DN_SingleList* DN_sl = NULL;//名称指针空间
@@ -108,11 +108,11 @@ int main()
 					system("cls");
 					break;
 				case Change: //修改数据
-					//ModifyResource(&ptrq, &DN_sl, &BC_sl);
+					ModifyResource(&ptrq, &DN_sl, &BC_sl);
 					system("cls");
 					break;
 				case Delete: //删除数据
-					//DelateResource(&ptrq, &DN_sl, &BC_sl);
+					DelateResource(&ptrq, &DN_sl, &BC_sl);
 					system("cls");
 					break;
 				case Back_menu_1: //返回上级目录
