@@ -2,6 +2,7 @@
 
 #include "Resource.h"
 #include "Prompttext.h"
+#include "File.h"
 
 //随机id
 char* Randomid(char* dst)
@@ -54,40 +55,6 @@ void InitResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_s
 	printf("变长数组调试，暂停加载文件\n");
 }
 
-//加载文件
-//void Load_Resource(Date_Base* pc)
-//{
-//	FILE* pf = fopen("Resource.dat", "r");
-//	if (pf == NULL)
-//	{
-//		perror("LoadResource");
-//		return;
-//	}
-//	//读文件
-//	DN_TypeDefine tmp1 = { 0 };//确定文件是否存在
-//	BCL_TypeDefine tmp2 = { 0 };
-//	while (fread(&tmp1.year, sizeof(DN_TypeDefine), 1, pf))
-//	{
-//		if(fread(&tmp2.context_paragraph, sizeof(BCL_TypeDefine), 1, pf)!=0)
-//		{
-//			//检测是否需要增容
-//			CheckResource(pc);
-//			pc->name_1[pc->sz] = tmp1;
-//			pc->context_1[pc->sz] = tmp2;
-//			pc->sz++;
-//			system("cls");//临时性措施
-//		}
-//		else
-//		{
-//			break;
-//		}
-//		
-//	}
-//	//关闭文件
-//	fclose(pf);
-//	pf = NULL;
-//}
-
 //增容检测
 void CheckResource(Base_Struct* ptrq)
 {
@@ -104,7 +71,7 @@ void CheckResource(Base_Struct* ptrq)
 		}
 		else
 		{
-			perror("CheckResource/ptr");
+			perror("CheckResource/Base_Main* ptr");
 			printf("          -----------------------------           \n");
 			printf("           开辟增容空间失败！存在空指针           \n");
 			printf("                2秒后返回输入界面                 \n");
@@ -192,18 +159,20 @@ void AddResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl
 void AddResource_Headline(Base_Struct* ptrq, DN_SingleList** DN_sl, char* id)
 {
 	//结构体临时变量
+		int clear = 0;
 		unsigned short headlinecount = 0;
 		char headline[TEXT_200] = { 0 };
 	//输入
 		printf("请输入标题：\n");
-		scanf("%s", headline);
+		scanf("%[^\n]", headline);
+		while ((clear = getchar()) != '\n' && clear != EOF);//清空输入缓冲区
 		headlinecount = (unsigned short)strlen(headline); //标题字数
 		char* headlinepoint = headline; //字符串转为字符指针
 	//开辟存储空间&赋值
 		Base_Name* BN = malloc(sizeof(Base_Name) + (headlinecount + 1) * sizeof(char));
 		if (BN == NULL)
 		{
-			perror("malloc/Base_Name* BN ");
+			perror("AddResource_Headline/Base_Name* BN ");
 			return;
 		}
 		memcpy(BN[0].id, id, 9);
@@ -221,7 +190,7 @@ void AddResource_Headline(Base_Struct* ptrq, DN_SingleList** DN_sl, char* id)
 			str1 = realloc(*DN_sl, sizeof(DN_SingleList) + sizeof(DN_TypeDefine) * (DN_sl[0]->sz + 1));
 			if (str1 == NULL)
 			{
-				perror("Initresource/BC_sl");
+				perror("AddResource_Headline/DN_SingleList* str1");
 				return;
 			}
 			*DN_sl = str1;
@@ -237,10 +206,11 @@ void AddResource_Context(Base_Struct* ptrq, BC_SingleList** BC_sl, char* id)
 		BC_Temple = (BC_LineList*)malloc(sizeof(BC_LineList) + sizeof(BC_TypeDefine) * TEXT_500);//默认501行
 		if (BC_Temple == NULL)
 		{
-			perror("Initresource/BC_LineList*");
+			perror("AddResource_Context/BC_LineList*");
 			return;
 		}
 	//结构体临时变量
+		int clear = 0;
 		unsigned short contextcount = 0;
 		char context_paragraph[TEXT_1000] = { 0 };
 		char id_line[11] = { 0 };
@@ -251,7 +221,8 @@ void AddResource_Context(Base_Struct* ptrq, BC_SingleList** BC_sl, char* id)
 	{
 		//输入
 			printf("第%d行:", lines);
-			scanf("%s", context_paragraph);
+			scanf("%[^\n]", context_paragraph);
+			while ((clear = getchar()) != '\n' && clear != EOF);//清空输入缓冲区
 			if (strcmp(context_paragraph, "quit") == 0) //为quit时退出
 			{
 				break;
@@ -263,7 +234,7 @@ void AddResource_Context(Base_Struct* ptrq, BC_SingleList** BC_sl, char* id)
 			Base_Context* BC = malloc(sizeof(Base_Context) + (contextcount + 1) * sizeof(char));
 			if (BC == NULL)
 			{
-				perror("malloc/Base_Context* BC ");
+				perror("AddResource_Context/Base_Context* BC ");
 				break;
 			}
 			sprintf(id_line, "%s%d", id, lines);
@@ -303,7 +274,7 @@ void AddResource_Context(Base_Struct* ptrq, BC_SingleList** BC_sl, char* id)
 			str1 = realloc(*BC_sl, sizeof(BC_SingleList) + sizeof(BCL_TypeDefine) * (BC_sl[0]->sz + 1));
 			if (str1 == NULL)
 			{
-				perror("Initresource/BC_sl");
+				perror("AddResource_Context/BC_SingleList* str1");
 				return;
 			}
 			*BC_sl = str1;
@@ -356,29 +327,6 @@ void SeacrhResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 		break;
 	}
 }
-
-//保存文件
-//void SaveResource(Date_Base* pc)
-//{
-//	//打开文件
-//	FILE*pf= fopen("Resource.dat", "w");
-//	if (pf == NULL)
-//	{
-//		perror("SaveResource");
-//		return;
-//	}
-//	//写文件
-//	int i = 0;
-//	for (i = 0;i < pc->sz;i++)
-//	{
-//		fwrite(pc->name_1 + i, sizeof(DN_TypeDefine), 1, pf);
-//		fwrite(pc->context_1 + i, sizeof(BCL_TypeDefine), 1, pf);
-//	}
-//	//关闭文件
-//	fclose(pf);
-//	pf = NULL;
-//	//void function_over();//测试功能
-//}
 
 static int FindHeadlineResource(DN_SingleList** DN_sl, char Headline[])
 {
@@ -475,6 +423,7 @@ void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 			{
 				if (ptrq->BM[pos].day > 0 && ptrq->BM[pos].day < 32)
 				{
+						int clear = 0;
 						unsigned int i = 0;
 						//释放内存
 						Base_Name* BN = NULL;
@@ -503,14 +452,15 @@ void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 						memcpy(ptrq->BM[ptrq->sz].id, id, 9);//复制id
 						//输入
 						printf("请输入标题：\n");
-						scanf("%s", headline);
+						scanf("%[^\n]", headline);
+						while ((clear = getchar()) != '\n' && clear != EOF);//清空输入缓冲区
 						headlinecount = (unsigned short)strlen(headline); //标题字数
 						char* headlinepoint = headline; //字符串转为字符指针
 						//开辟存储空间&赋值
 						Base_Name* BN_temp = malloc(sizeof(Base_Name) + (headlinecount + 1) * sizeof(char));
 						if (BN_temp == NULL)
 						{
-							perror("malloc/Base_Name* BN ");
+							perror("ModifyResource/Base_Name* BN ");
 							return;
 						}
 						memcpy(BN_temp[0].id, id, 9);
@@ -526,7 +476,7 @@ void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 						BC_Temple = (BC_LineList*)malloc(sizeof(BC_LineList) + sizeof(BC_TypeDefine) * TEXT_500);//默认501行
 						if (BC_Temple == NULL)
 						{
-							perror("Initresource/BC_LineList*");
+							perror("ModifyResource/BC_LineList*");
 							return;
 						}
 						//结构体临时变量
@@ -540,7 +490,8 @@ void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 						{
 							//输入
 							printf("第%d行:", lines);
-							scanf("%s", context_paragraph);
+							scanf("%[^\n]", context_paragraph);
+							while ((clear = getchar()) != '\n' && clear != EOF);//清空输入缓冲区
 							if (strcmp(context_paragraph, "quit") == 0) //为quit时退出
 							{
 								break;
@@ -552,7 +503,7 @@ void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 							Base_Context* BC = malloc(sizeof(Base_Context) + (contextcount + 1) * sizeof(char));
 							if (BC == NULL)
 							{
-								perror("malloc/Base_Context* BC ");
+								perror("ModifyResource/Base_Context* BC ");
 								break;
 							}
 							sprintf(id_line, "%s%d", id, lines);
@@ -583,22 +534,28 @@ void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 						BC_Formal = NULL;
 
 					printf("          -----------------------------           \n");
-					printf("          |  成功录入，3秒后自动返回  |           \n");
+					printf("          |         成功录入！        |           \n");
 					printf("          -----------------------------           \n");
-					Sleep(3000);
+					system("pause");
 					break;
 				}
 				else
 				{
-					printf("日期非正常数据，请确认输入！\n3秒后返回管理界面\n");
-					Sleep(3000);
+					printf("          -----------------------------           \n");
+					printf("           日期非正常数据，请确认输入！           \n");
+					printf("                2秒后返回输入界面                 \n");
+					printf("          -----------------------------           \n");
+					Sleep(2000);
 					break;
 				}
 			}
 			else
 			{
-				printf("月份非正常数据，请确认输入！\n3秒后返回管理界面\n");
-				Sleep(3000);
+				printf("          -----------------------------           \n");
+				printf("           月份非正常数据，请确认输入！           \n");
+				printf("                2秒后返回输入界面                 \n");
+				printf("          -----------------------------           \n");
+				Sleep(2000);
 				break;
 			}
 		}

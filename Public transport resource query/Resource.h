@@ -82,9 +82,6 @@ typedef struct Base_Main
 //结构初始化
 void InitResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl);
 
-////加载文件
-//void Load_Resource(Date_Base* pc);
-
 //录入数据
 void AddResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl);
 //录入数据 - 标题
@@ -97,9 +94,6 @@ void SeacrhResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 
 //检测增容
 void CheckResource(Base_Struct* ptrq);
-
-//保存文件
-//void SaveResource(Date_Base* pc);
 
 //修改文件
 void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl);

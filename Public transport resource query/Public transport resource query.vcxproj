@@ -140,12 +140,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="File.c" />
     <ClCompile Include="Prompttext.c" />
     <ClCompile Include="Resource.c" />
     <ClCompile Include="temper.c" />
     <ClCompile Include="test.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="File.h" />
     <ClInclude Include="Prompttext.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="resource1.h" />

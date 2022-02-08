@@ -2,6 +2,7 @@
 
 #include "Resource.h"
 #include "Prompttext.h"
+#include "File.h"
 
 // 管理功能目录
 void menu_1_1()
@@ -85,8 +86,8 @@ int main()
 			Destorycontact(&ptrq, &DN_sl, &BC_sl);//销毁内存
 			break;
 		case Save: //保存
-			function_underbuild();
-			//SaveResource(&Base_1);
+			//function_underbuild();
+			SaveResource(&ptrq);
 			Destorycontact(&ptrq, &DN_sl, &BC_sl);
 			input_1 = 0;//转到退出
 			break;
