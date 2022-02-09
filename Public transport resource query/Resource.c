@@ -60,7 +60,7 @@ void CheckResource(Base_Struct* ptrq)
 {
 	if (ptrq->sz == ptrq->capacity)
 	{
-		Base_Main* ptr = (Base_Main*)realloc(ptrq->BM, (ptrq->capacity + DEFAULT_SZ) * sizeof(Base_Main));
+		Base_Main* ptr = (Base_Main*)realloc(ptrq->BM, ((int)ptrq->capacity + DEFAULT_SZ) * sizeof(Base_Main));
 		if (ptr != NULL)
 		{
 			ptrq->BM = ptr;
@@ -169,14 +169,14 @@ void AddResource_Headline(Base_Struct* ptrq, DN_SingleList** DN_sl, char* id)
 		headlinecount = (unsigned short)strlen(headline); //标题字数
 		char* headlinepoint = headline; //字符串转为字符指针
 	//开辟存储空间&赋值
-		Base_Name* BN = malloc(sizeof(Base_Name) + (headlinecount + 1) * sizeof(char));
+		Base_Name* BN = malloc(sizeof(Base_Name) + ((int)headlinecount + 1) * sizeof(char));
 		if (BN == NULL)
 		{
 			perror("AddResource_Headline/Base_Name* BN ");
 			return;
 		}
 		memcpy(BN[0].id, id, 9);
-		memcpy(BN[0].headline, headlinepoint, headlinecount + 1);
+		memcpy(BN[0].headline, headlinepoint, (int)headlinecount + 1);
 	//数据&指针转移
 		ptrq->BM[ptrq->sz].headlinecount = headlinecount;
 		DN_sl[0]->DN[DN_sl[0]->sz] = (unsigned long*)BN;//指针复制
@@ -187,7 +187,7 @@ void AddResource_Headline(Base_Struct* ptrq, DN_SingleList** DN_sl, char* id)
 		{
 			DN_SingleList* str1 = NULL;
 			DN_sl[0]->capacity++;
-			str1 = realloc(*DN_sl, sizeof(DN_SingleList) + sizeof(DN_TypeDefine) * (DN_sl[0]->sz + 1));
+			str1 = realloc(*DN_sl, sizeof(DN_SingleList) + sizeof(DN_TypeDefine) * ((int)DN_sl[0]->sz + 1));
 			if (str1 == NULL)
 			{
 				perror("AddResource_Headline/DN_SingleList* str1");
@@ -214,6 +214,7 @@ void AddResource_Context(Base_Struct* ptrq, BC_SingleList** BC_sl, char* id)
 		unsigned short contextcount = 0;
 		char context_paragraph[TEXT_1000] = { 0 };
 		char id_line[11] = { 0 };
+		char linecount_line[301] = { 0 };
 		int lines = 0;//确定行数
 		int count = 0;//数字数
 	printf("请输入内容：\n");
@@ -231,15 +232,24 @@ void AddResource_Context(Base_Struct* ptrq, BC_SingleList** BC_sl, char* id)
 			count = contextcount + count;//字数统计
 			char* contextpoint = context_paragraph;
 		//开辟行存储空间&赋值
-			Base_Context* BC = malloc(sizeof(Base_Context) + (contextcount + 1) * sizeof(char));
+			Base_Context* BC = malloc(sizeof(Base_Context) + ((int)contextcount + 1) * sizeof(char));
 			if (BC == NULL)
 			{
 				perror("AddResource_Context/Base_Context* BC ");
 				break;
 			}
 			sprintf(id_line, "%s%d", id, lines);
+			if (lines < 1)
+			{
+				sprintf(linecount_line, "%d",contextcount);
+			}
+			else
+			{
+
+				sprintf(linecount_line, "%s%s%d", linecount_line, "|", contextcount);
+			}
 			memcpy(BC[0].id, id_line, 11);
-			memcpy(BC[0].context_paragraph, contextpoint, contextcount + 1);
+			memcpy(BC[0].context_paragraph, contextpoint, (int)contextcount + 1);
 		//数据&指针转移
 			BC_Temple->BCL[lines] = (unsigned long*)BC;//单行指针复制
 			BC = NULL;
@@ -262,6 +272,7 @@ void AddResource_Context(Base_Struct* ptrq, BC_SingleList** BC_sl, char* id)
 	//数据&指针转移
 		ptrq->BM[ptrq->sz].line = lines;
 		ptrq->BM[ptrq->sz].contextcount = count;
+		strcpy(ptrq->BM[ptrq->sz].linecount, linecount_line);
 		ptrq->sz++;
 		BC_sl[0]->DC[BC_sl[0]->sz] = (BCL_TypeDefine)BC_Formal;//指针复制
 		BC_Formal = NULL;
@@ -271,7 +282,7 @@ void AddResource_Context(Base_Struct* ptrq, BC_SingleList** BC_sl, char* id)
 		{
 			BC_SingleList* str1 = NULL;
 			BC_sl[0]->capacity++;
-			str1 = realloc(*BC_sl, sizeof(BC_SingleList) + sizeof(BCL_TypeDefine) * (BC_sl[0]->sz + 1));
+			str1 = realloc(*BC_sl, sizeof(BC_SingleList) + sizeof(BCL_TypeDefine) * ((int)BC_sl[0]->sz + 1));
 			if (str1 == NULL)
 			{
 				perror("AddResource_Context/BC_SingleList* str1");
@@ -316,7 +327,7 @@ void SeacrhResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 			for (j = 0; j < ptrq->BM[i].line; j++)
 			{
 				BC = (Base_Context*)BCA->BCL[j];
-				printf("第%d行：%s\n", j, BC->context_paragraph);
+				printf("    %s\n",BC->context_paragraph);
 			}
 		}
 		printf("          -----------------------------           \n");

@@ -36,13 +36,13 @@
 //}
 
 //保存文件
-void SaveResource(Base_Struct* ptrq)
+void SaveResource(Base_Struct* ptrq, DN_SingleList** DN_sl)
 {
 	//结构体临时变量
 	unsigned int i = 0;
 
 	//主结构文件
-	FILE* pf = fopen("Resource.dat", "w");
+	FILE* pf = fopen(".\\Date\\Resource.dat", "w");
 	if (pf == NULL)
 	{
 		perror("SaveResource");
@@ -58,20 +58,22 @@ void SaveResource(Base_Struct* ptrq)
 	pf = NULL;
 
 	//标题
-	//FILE* pf1 = fopen("Resource.dat", "w");
-	//if (pf1 == NULL)
-	//{
-	//	perror("SaveResource");
-	//	return;
-	//}
-	////写文件
-	//for (i = 0; i < ptrq->sz; i++)
-	//{
-	//	fwrite(ptrq->BM + i, sizeof(Base_Main), 1, pf1);
-	//}
-	////关闭文件
-	//fclose(pf1);
-	//pf1 = NULL;
+	FILE* pf1 = fopen(".\\Date\\Head.dat", "w");
+	if (pf1 == NULL)
+	{
+		perror("SaveResource");
+		return;
+	}
+	//写文件
+	for (i = 0; i < ptrq->sz; i++)
+	{
+		Base_Name* BN = NULL;
+		BN = (Base_Name*)DN_sl[0]->DN[i];
+		fwrite(BN, sizeof(Base_Main) + (ptrq->BM[i].headlinecount * sizeof(char)), 1, pf1);
+	}
+	//关闭文件
+	fclose(pf1);
+	pf1 = NULL;
 
 
 	//void function_over();//测试功能

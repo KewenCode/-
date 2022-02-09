@@ -1,2 +1,5 @@
 .vs/
+x64/
+Debug/
 **/Debug/
+**/x64/

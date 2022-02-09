@@ -1,8 +1,9 @@
 #pragma once
 #pragma warning(disable : 6031)//忽略vs中scanf报错的nc行为
 #pragma warning(disable : 5105)//生成“已定义”的宏扩展具有未定义的行为
+#pragma warning(disable : 26451)//忽略算术溢出
 
-#define FileVersion "V0.0.6.2-dev"
+#define FileVersion "V0.0.6.4-dev"
 #define ProductVersion "V0.0.1.0"
 
 #include <stdio.h>
@@ -14,11 +15,11 @@
 #define YEAR_4 5
 #define MONTH_2 3
 #define DAY_2 3
-#define TEXT_10 11
-#define TEXT_100 101
-#define TEXT_200 201
-#define TEXT_500 501
-#define TEXT_1000 1001
+#define TEXT_10 11U
+#define TEXT_100 101U
+#define TEXT_200 201U
+#define TEXT_500 501U
+#define TEXT_1000 1001U
 
 #define DEFAULT_SZ 3//默认大小
 #define MAX 3
@@ -32,6 +33,7 @@ typedef struct Base_Main
 	unsigned short day;
 	unsigned short headlinecount;
 	unsigned short line;//记录行数
+	char linecount[301];//每行行数
 	unsigned short contextcount;//字数
 }Base_Main;
 //主结构

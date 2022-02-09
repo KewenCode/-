@@ -87,7 +87,7 @@ int main()
 			break;
 		case Save: //保存
 			//function_underbuild();
-			SaveResource(&ptrq);
+			SaveResource(&ptrq, &DN_sl);
 			Destorycontact(&ptrq, &DN_sl, &BC_sl);
 			input_1 = 0;//转到退出
 			break;

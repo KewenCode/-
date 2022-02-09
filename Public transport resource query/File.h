@@ -8,4 +8,4 @@
 //void Load_Resource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl);
 
 //±£´æÎÄ¼þ
-void SaveResource(Base_Struct* ptrq);
+void SaveResource(Base_Struct* ptrq, DN_SingleList** DN_sl);
