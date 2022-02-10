@@ -103,7 +103,7 @@ void AddResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl
 	//赋值
 	while (1)
 	{
-		printf("请输入 年 月 日 [例：20220101]：\n");
+		printf("\033[1;46;37m请输入 年 月 日 [例：20220101]：\033[1;47;30m\n");
 		scanf("%4hu%2hu%2hu", &(year), &(month), &(day));
 		while ((clear = getchar()) != '\n' && clear != EOF);//清空输入缓冲区
 		//if (clear != 0)
@@ -163,7 +163,7 @@ void AddResource_Headline(Base_Struct* ptrq, DN_SingleList** DN_sl, char* id)
 		unsigned short headlinecount = 0;
 		char headline[TEXT_200] = { 0 };
 	//输入
-		printf("请输入标题：\n");
+		printf("\033[1;46;37m请输入标题：\033[1;47;30m\n");
 		scanf("%[^\n]", headline);
 		while ((clear = getchar()) != '\n' && clear != EOF);//清空输入缓冲区
 		headlinecount = (unsigned short)strlen(headline); //标题字数
@@ -217,11 +217,11 @@ void AddResource_Context(Base_Struct* ptrq, BC_SingleList** BC_sl, char* id)
 		char linecount_line[301] = { 0 };
 		int lines = 0;//确定行数
 		int count = 0;//数字数
-	printf("请输入内容：\n");
+	printf("\033[1;46;37m请输入内容：\033[1;47;30m\n");
 	do
 	{
 		//输入
-			printf("第%d行:", lines);
+			printf("\033[1;46;37m第%d行:\033[1;47;30m", lines);
 			scanf("%[^\n]", context_paragraph);
 			while ((clear = getchar()) != '\n' && clear != EOF);//清空输入缓冲区
 			if (strcmp(context_paragraph, "quit") == 0) //为quit时退出
@@ -426,7 +426,7 @@ void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 	}
 	else
 	{
-		printf("请输入 年 月 日 [例：20220101]：\n");
+		printf("\033[1;46;37m请输入 年 月 日 [例：20220101]：\033[1;47;30m\n");
 		scanf("%4hu%2hu%2hu", &(ptrq->BM[pos].year), &(ptrq->BM[pos].month), &(ptrq->BM[pos].day));
 		while (1)
 		{
@@ -462,7 +462,7 @@ void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 						Randomid(id);
 						memcpy(ptrq->BM[ptrq->sz].id, id, 9);//复制id
 						//输入
-						printf("请输入标题：\n");
+						printf("\033[1;46;37m请输入标题：\033[1;47;30m\n");
 						scanf("%[^\n]", headline);
 						while ((clear = getchar()) != '\n' && clear != EOF);//清空输入缓冲区
 						headlinecount = (unsigned short)strlen(headline); //标题字数
@@ -496,11 +496,11 @@ void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 						char id_line[11] = { 0 };
 						int lines = 0;//确定行数
 						int count = 0;//数字数
-						printf("请输入内容：\n");
+						printf("\033[1;46;37m请输入内容：\033[1;47;30m\n");
 						do
 						{
 							//输入
-							printf("第%d行:", lines);
+							printf("\033[1;46;37m第%d行:\033[1;47;30m", lines);
 							scanf("%[^\n]", context_paragraph);
 							while ((clear = getchar()) != '\n' && clear != EOF);//清空输入缓冲区
 							if (strcmp(context_paragraph, "quit") == 0) //为quit时退出
