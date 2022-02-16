@@ -3,7 +3,7 @@
 #pragma warning(disable : 5105)//生成“已定义”的宏扩展具有未定义的行为
 #pragma warning(disable : 26451)//忽略算术溢出
 
-#define FileVersion "V0.0.6.5-dev"
+#define FileVersion "V0.0.6.6-dev"
 #define ProductVersion "V0.0.1.0"
 
 #include <stdio.h>

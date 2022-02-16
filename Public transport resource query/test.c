@@ -4,6 +4,8 @@
 #include "Prompttext.h"
 #include "File.h"
 
+#include "sqlite3.h"
+
 // 管理功能目录
 void menu_1_1()
 {
