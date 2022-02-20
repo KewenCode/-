@@ -3,8 +3,7 @@
 #include "Resource.h"
 #include "Prompttext.h"
 #include "File.h"
-
-#include "sqlite3.h"
+#include "SQLite.h"
 
 // 管理功能目录
 void menu_1_1()
@@ -14,10 +13,11 @@ void menu_1_1()
 	printf("|------------------------------------------------|\n");
 	printf("|                    管理功能                    |\n");
 	printf("|                                                |\n");
-	printf("|               1.  [ 录入数据 ]                 |\n");
-	printf("|               2.  [ 导出数据 ]                 |\n");
-	printf("|               3.  [ 删除数据 ]                 |\n");
-	printf("|               4.  [ 修改数据 ]                 |\n");
+	printf("|               1.  [ 查询数据 ]                 |\n");
+	printf("|               2.  [ 录入数据 ]                 |\n");
+	printf("|               3.  [ 导出数据 ]                 |\n");
+	printf("|               4.  [ 删除数据 ]                 |\n");
+	printf("|               5.  [ 修改数据 ]                 |\n");
 	printf("|                                                |\n");
 	printf("|               0. <返回上层目录>                |\n");
 	printf("--------------------------------------------------\033[1;47;30m\n");
@@ -46,6 +46,7 @@ void menu_1()
 enum Option_menu_1_1
 {
 	Back_menu_1,
+	SQLiteSearch,
 	Add,
 	Out,
 	Delete,
@@ -75,6 +76,7 @@ int main()
 	//初始化，申请空间
 	InitResource(&ptrq, &DN_sl, &BC_sl);
 
+
 	do
 	{
 		menu_1();//基本目录
@@ -84,7 +86,7 @@ int main()
 		{
 		case Search: //查询
 			//function_underbuild();
-			SeacrhResource(&ptrq, &DN_sl, &BC_sl);
+			SQliteSearch();
 			system("cls");
 			break;
 		case Exit_Witnout_Saving: //(不保存)退出
@@ -105,6 +107,11 @@ int main()
 				scanf("%d", &input_1_1);
 				switch (input_1_1)
 				{
+				case SQLiteSearch: //查询
+					//function_underbuild();
+					SeacrhResource(&ptrq, &DN_sl, &BC_sl);
+					system("cls");
+					break;
 				case Add: //添加数据
 					AddResource(&ptrq, &DN_sl, &BC_sl);
 					system("cls");
@@ -140,6 +147,6 @@ int main()
 			input_error();
 			break;
 		}
-	}while (input_1);
+	} while (input_1);
 	return 0;
 }

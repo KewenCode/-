@@ -89,12 +89,14 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>D:\C语言\公交资源查询\Public transport resource query\Public transport resource query\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>
+      </AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\C语言\公交资源查询\Public transport resource query\Public transport resource query\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -146,6 +148,8 @@
     <ClCompile Include="File.c" />
     <ClCompile Include="Prompttext.c" />
     <ClCompile Include="Resource.c" />
+    <ClCompile Include="SQLite.c" />
+    <ClCompile Include="strnormalize.c" />
     <ClCompile Include="temper.c" />
     <ClCompile Include="test.c" />
   </ItemGroup>
@@ -154,6 +158,8 @@
     <ClInclude Include="Prompttext.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="resource1.h" />
+    <ClInclude Include="SQLite.h" />
+    <ClInclude Include="strnormalize.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Public transport resource query.rc" />

@@ -30,6 +30,12 @@
     <ClCompile Include="File.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="SQLite.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="strnormalize.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Prompttext.h">
@@ -42,6 +48,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="File.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SQLite.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="strnormalize.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

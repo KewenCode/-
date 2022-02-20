@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 
 #include "Prompttext.h"
+#include "SQLite.h"
 
 //#define function_printf(X,FORMAT) printf("当前参数："#X" 值："FORMAT"\n"，X);
 
@@ -25,6 +26,7 @@ void input_error()
 	printf(" \n");
 	printf(" \n");
 	printf("          -----------------------------           \n");
+	printf("          |   输入错误，请重新输入！  |           \n");
 	printf("          |   输入错误，请重新输入！  |           \n");
 	printf("          |       2秒后自动返回       |           \n");
 	printf("          -----------------------------           \n");
@@ -80,11 +82,14 @@ void function_over()
 void function_About()
 {
 	printf("        -----------------------------------       \n");
-	printf("        文件版本(FileVersion):"); 
+	printf("        文件版本(FileVersion):");
 	printf("%s", FileVersion);
 	printf("\n");
 	printf("        发布版本(ProductVersion):");
 	printf("%s", ProductVersion);
+	printf("\n");
+	printf("        SQLite版本(SQLiteVersion):");
+	SQliteVersion();
 	printf("\n");
 	printf("        -----------------------------------       \n");
 	system("pause");

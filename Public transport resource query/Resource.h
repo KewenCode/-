@@ -3,14 +3,19 @@
 #pragma warning(disable : 5105)//生成“已定义”的宏扩展具有未定义的行为
 #pragma warning(disable : 26451)//忽略算术溢出
 
-#define FileVersion "V0.0.6.6-dev"
+#define FileVersion "V0.0.7.0-dev"
 #define ProductVersion "V0.0.1.0"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #include <windows.h>
 #include <time.h>
+
+#include "strnormalize.h"
+#include "sqlite3.h"
+#pragma comment(lib, "sqlite3.lib")  
 
 #define YEAR_4 5
 #define MONTH_2 3
@@ -37,49 +42,49 @@ typedef struct Base_Main
 	unsigned short contextcount;//字数
 }Base_Main;
 //主结构
-	typedef struct Base_Struct
-	{
-		Base_Main* BM;//存放的信息空间
-		unsigned int sz;//记录已读取有效信息总量
-		unsigned int capacity;//目前malloc容量
-	}Base_Struct;
+typedef struct Base_Struct
+{
+	Base_Main* BM;//存放的信息空间
+	unsigned int sz;//记录已读取有效信息总量
+	unsigned int capacity;//目前malloc容量
+}Base_Struct;
 
 //名称 存储结构
-	typedef struct Base_Name
-	{
-		char id[9];
-		char headline[0];//标题内容
-	}Base_Name;
-	typedef unsigned long* DN_TypeDefine;
-	typedef struct DN_SingleList
-	{
-		unsigned int sz; //已存储有效信息量
-		unsigned int capacity;//目前malloc容量
-		DN_TypeDefine DN[0]; //DN指针
-	}DN_SingleList;
+typedef struct Base_Name
+{
+	char id[9];
+	char headline[0];//标题内容
+}Base_Name;
+typedef unsigned long* DN_TypeDefine;
+typedef struct DN_SingleList
+{
+	unsigned int sz; //已存储有效信息量
+	unsigned int capacity;//目前malloc容量
+	DN_TypeDefine DN[0]; //DN指针
+}DN_SingleList;
 
 //文本内容 存储结构
-	typedef struct Base_Context
-	{
-		char id[11];
-		char context_paragraph[0];//每段内容
-	}Base_Context;
-	//行结构
-	typedef unsigned long* BC_TypeDefine;
-	typedef struct BC_LineList
-	{
-		unsigned short line; //行数
-		BC_TypeDefine BCL[0]; //BC指针
-	}BC_LineList;
-	//单结构
-	typedef unsigned long* BCL_TypeDefine;
-	typedef struct BC_SingleList
-	{
-		unsigned short alline; //总行数
-		unsigned int sz; //已存储有效信息量
-		unsigned int capacity;//目前malloc容量
-		BCL_TypeDefine DC[0]; //BCL指针
-	}BC_SingleList;
+typedef struct Base_Context
+{
+	char id[11];
+	char context_paragraph[0];//每段内容
+}Base_Context;
+//行结构
+typedef unsigned long* BC_TypeDefine;
+typedef struct BC_LineList
+{
+	unsigned short line; //行数
+	BC_TypeDefine BCL[0]; //BC指针
+}BC_LineList;
+//单结构
+typedef unsigned long* BCL_TypeDefine;
+typedef struct BC_SingleList
+{
+	unsigned short alline; //总行数
+	unsigned int sz; //已存储有效信息量
+	unsigned int capacity;//目前malloc容量
+	BCL_TypeDefine DC[0]; //BCL指针
+}BC_SingleList;
 
 //结构初始化
 void InitResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl);

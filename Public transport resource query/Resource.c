@@ -1,10 +1,10 @@
-#define _CRT_SECURE_NO_WARNINGS 1
+ï»¿#define _CRT_SECURE_NO_WARNINGS 1
 
 #include "Resource.h"
 #include "Prompttext.h"
 #include "File.h"
 
-//Ëæ»úid
+//éšæœºid
 char* Randomid(char* dst)
 {
 	unsigned long seconds;
@@ -16,46 +16,46 @@ char* Randomid(char* dst)
 }
 
 
-//½á¹¹³õÊ¼»¯ - ¶¯Ì¬°æ±¾
+//ç»“æ„åˆå§‹åŒ– - åŠ¨æ€ç‰ˆæœ¬
 void InitResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl)
 {
-	//Ö÷½á¹¹
-	ptrq->BM = (Base_Main*)malloc(DEFAULT_SZ * sizeof(Base_Main));//Ä¬ÈÏÈı¸ö
+	//ä¸»ç»“æ„
+	ptrq->BM = (Base_Main*)malloc(DEFAULT_SZ * sizeof(Base_Main));//é»˜è®¤ä¸‰ä¸ª
 	if (ptrq->BM == NULL)
 	{
-		perror("Initresource/Ö÷½á¹¹");
+		perror("Initresource/ä¸»ç»“æ„");
 		return;
 	}
 	ptrq->capacity = DEFAULT_SZ;
 	ptrq->sz = 0;
 
-	//ÈÕÆÚÃû³Æ ´æ´¢½á¹¹
-	*DN_sl = malloc(sizeof(DN_SingleList)+ sizeof(DN_TypeDefine));//Ä¬ÈÏÒ»¸ö
+	//æ—¥æœŸåç§° å­˜å‚¨ç»“æ„
+	*DN_sl = malloc(sizeof(DN_SingleList) + sizeof(DN_TypeDefine));//é»˜è®¤ä¸€ä¸ª
 	if (*DN_sl == NULL)
 	{
-		perror("Initresource/ÈÕÆÚÃû³Æ ´æ´¢½á¹¹");
+		perror("Initresource/æ—¥æœŸåç§° å­˜å‚¨ç»“æ„");
 		return;
 	}
 	DN_sl[0]->capacity = 1;
 	DN_sl[0]->sz = 0;
 
-	//ÎÄ±¾ÄÚÈİ ´æ´¢½á¹¹
-	*BC_sl = malloc(sizeof(BC_SingleList) + sizeof(BCL_TypeDefine));//Ä¬ÈÏÒ»¸ö
+	//æ–‡æœ¬å†…å®¹ å­˜å‚¨ç»“æ„
+	*BC_sl = malloc(sizeof(BC_SingleList) + sizeof(BCL_TypeDefine));//é»˜è®¤ä¸€ä¸ª
 	if (*BC_sl == NULL)
 	{
-		perror("Initresource/ÎÄ±¾ÄÚÈİ ´æ´¢½á¹¹");
+		perror("Initresource/æ–‡æœ¬å†…å®¹ å­˜å‚¨ç»“æ„");
 		return;
 	}
 	BC_sl[0]->capacity = 1;
 	BC_sl[0]->sz = 0;
 	BC_sl[0]->alline = 0;
 
-	//¼ÓÔØÎÄ¼ş
+	//åŠ è½½æ–‡ä»¶
 	//Load_Resource(pc);  
-	printf("±ä³¤Êı×éµ÷ÊÔ£¬ÔİÍ£¼ÓÔØÎÄ¼ş\n");
+	printf("å˜é•¿æ•°ç»„è°ƒè¯•ï¼Œæš‚åœåŠ è½½æ–‡ä»¶\n");
 }
 
-//ÔöÈİ¼ì²â
+//å¢å®¹æ£€æµ‹
 void CheckResource(Base_Struct* ptrq)
 {
 	if (ptrq->sz == ptrq->capacity)
@@ -66,15 +66,15 @@ void CheckResource(Base_Struct* ptrq)
 			ptrq->BM = ptr;
 			ptrq->capacity += DEFAULT_SZ;
 			//printf("          -----------------------------           \n");
-			//printf("          |         ÔöÈİ³É¹¦£¡        |           \n");
+			//printf("          |         å¢å®¹æˆåŠŸï¼        |           \n");
 			//printf("          -----------------------------           \n");
 		}
 		else
 		{
 			perror("CheckResource/Base_Main* ptr");
 			printf("          -----------------------------           \n");
-			printf("           ¿ª±ÙÔöÈİ¿Õ¼äÊ§°Ü£¡´æÔÚ¿ÕÖ¸Õë           \n");
-			printf("                2Ãëºó·µ»ØÊäÈë½çÃæ                 \n");
+			printf("           å¼€è¾Ÿå¢å®¹ç©ºé—´å¤±è´¥ï¼å­˜åœ¨ç©ºæŒ‡é’ˆ           \n");
+			printf("                2ç§’åè¿”å›è¾“å…¥ç•Œé¢                 \n");
 			printf("          -----------------------------           \n");
 			Sleep(2000);
 			return;
@@ -82,35 +82,35 @@ void CheckResource(Base_Struct* ptrq)
 	}
 }
 
-//Â¼ÈëÊı¾İ - ¶¯Ì¬°æ±¾
+//å½•å…¥æ•°æ® - åŠ¨æ€ç‰ˆæœ¬
 void AddResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl)
 {
-	//È·ÈÏÈİÁ¿
-		CheckResource(ptrq);
-		printf("        -------------------------------           \n");
-		printf("          Ö÷½á¹¹ ÒÑÊ¹ÓÃ£º%d ÈİÁ¿£º%d\n", ptrq->sz, ptrq->capacity); 
-		printf("          ±êÌâ ÒÑÊ¹ÓÃ£º%d ÈİÁ¿£º%d\n", DN_sl[0]->sz, DN_sl[0]->capacity); 
-		printf("          ÎÄ±¾ ÒÑÊ¹ÓÃ£º%d ÈİÁ¿£º%d\n", BC_sl[0]->sz, BC_sl[0]->capacity); 
-		printf("        -------------------------------           \n");
-	//½á¹¹ÌåÁÙÊ±±äÁ¿
-		int clear = 0;
-		char id[9] = { 0 };
-		unsigned short year = 0;
-		unsigned short month = 0;
-		unsigned short day = 0;
-		unsigned short headlinecount = 0;
-		char headline[TEXT_200] = { 0 };
-	//¸³Öµ
+	//ç¡®è®¤å®¹é‡
+	CheckResource(ptrq);
+	printf("        -------------------------------           \n");
+	printf("          ä¸»ç»“æ„ å·²ä½¿ç”¨ï¼š%d å®¹é‡ï¼š%d\n", ptrq->sz, ptrq->capacity);
+	printf("          æ ‡é¢˜ å·²ä½¿ç”¨ï¼š%d å®¹é‡ï¼š%d\n", DN_sl[0]->sz, DN_sl[0]->capacity);
+	printf("          æ–‡æœ¬ å·²ä½¿ç”¨ï¼š%d å®¹é‡ï¼š%d\n", BC_sl[0]->sz, BC_sl[0]->capacity);
+	printf("        -------------------------------           \n");
+	//ç»“æ„ä½“ä¸´æ—¶å˜é‡
+	int clear = 0;
+	char id[9] = { 0 };
+	unsigned short year = 0;
+	unsigned short month = 0;
+	unsigned short day = 0;
+	unsigned short headlinecount = 0;
+	char headline[TEXT_200] = { 0 };
+	//èµ‹å€¼
 	while (1)
 	{
-		printf("\033[1;46;37mÇëÊäÈë Äê ÔÂ ÈÕ [Àı£º20220101]£º\033[1;47;30m\n");
+		printf("\033[1;46;37mè¯·è¾“å…¥ å¹´ æœˆ æ—¥ [ä¾‹ï¼š20220101]ï¼š\033[1;47;30m\n");
 		scanf("%4hu%2hu%2hu", &(year), &(month), &(day));
-		while ((clear = getchar()) != '\n' && clear != EOF);//Çå¿ÕÊäÈë»º³åÇø
+		while ((clear = getchar()) != '\n' && clear != EOF);//æ¸…ç©ºè¾“å…¥ç¼“å†²åŒº
 		//if (clear != 0)
 		//{
 		//	printf("          -----------------------------           \n");
-		//	printf("          ÊäÈë³¬³ö¹æ¶¨´óĞ¡£¬ÇëÈ·ÈÏÊäÈë£¡          \n");
-		//	printf("                2Ãëºó·µ»ØÊäÈë½çÃæ                 \n");
+		//	printf("          è¾“å…¥è¶…å‡ºè§„å®šå¤§å°ï¼Œè¯·ç¡®è®¤è¾“å…¥ï¼          \n");
+		//	printf("                2ç§’åè¿”å›è¾“å…¥ç•Œé¢                 \n");
 		//	printf("          -----------------------------           \n");
 		//	Sleep(2000);
 		//}
@@ -118,20 +118,20 @@ void AddResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl
 		{
 			if (day > 0 && day < 32)
 			{
-				//´´½¨id±êÊ¶
+				//åˆ›å»ºidæ ‡è¯†
 				Randomid(id);
-				memcpy(ptrq->BM[ptrq->sz].id, id, 9);//¸´ÖÆid
-				//ÄêÔÂÈÕ
+				memcpy(ptrq->BM[ptrq->sz].id, id, 9);//å¤åˆ¶id
+				//å¹´æœˆæ—¥
 				ptrq->BM[ptrq->sz].year = year;
 				ptrq->BM[ptrq->sz].month = month;
 				ptrq->BM[ptrq->sz].day = day;
-				//±êÌâ
+				//æ ‡é¢˜
 				AddResource_Headline(ptrq, DN_sl, id);
-				//ÄÚÈİ
+				//å†…å®¹
 				AddResource_Context(ptrq, BC_sl, id);
-				//·´À¡
+				//åé¦ˆ
 				printf("          -----------------------------           \n");
-				printf("          |         ³É¹¦Â¼Èë£¡        |           \n");
+				printf("          |         æˆåŠŸå½•å…¥ï¼        |           \n");
 				printf("          -----------------------------           \n");
 				system("pause");
 				break;
@@ -139,8 +139,8 @@ void AddResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl
 			else
 			{
 				printf("          -----------------------------           \n");
-				printf("           ÈÕÆÚ·ÇÕı³£Êı¾İ£¬ÇëÈ·ÈÏÊäÈë£¡           \n");
-				printf("                2Ãëºó·µ»ØÊäÈë½çÃæ                 \n");
+				printf("           æ—¥æœŸéæ­£å¸¸æ•°æ®ï¼Œè¯·ç¡®è®¤è¾“å…¥ï¼           \n");
+				printf("                2ç§’åè¿”å›è¾“å…¥ç•Œé¢                 \n");
 				printf("          -----------------------------           \n");
 				Sleep(2000);
 			}
@@ -148,164 +148,164 @@ void AddResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl
 		else
 		{
 			printf("          -----------------------------           \n");
-			printf("           ÔÂ·İ·ÇÕı³£Êı¾İ£¬ÇëÈ·ÈÏÊäÈë£¡           \n");
-			printf("                2Ãëºó·µ»ØÊäÈë½çÃæ                 \n");
+			printf("           æœˆä»½éæ­£å¸¸æ•°æ®ï¼Œè¯·ç¡®è®¤è¾“å…¥ï¼           \n");
+			printf("                2ç§’åè¿”å›è¾“å…¥ç•Œé¢                 \n");
 			printf("          -----------------------------           \n");
 			Sleep(2000);
 		}
 	}
 }
-//Â¼ÈëÊı¾İ - ±êÌâ
+//å½•å…¥æ•°æ® - æ ‡é¢˜
 void AddResource_Headline(Base_Struct* ptrq, DN_SingleList** DN_sl, char* id)
 {
-	//½á¹¹ÌåÁÙÊ±±äÁ¿
-		int clear = 0;
-		unsigned short headlinecount = 0;
-		char headline[TEXT_200] = { 0 };
-	//ÊäÈë
-		printf("\033[1;46;37mÇëÊäÈë±êÌâ£º\033[1;47;30m\n");
-		scanf("%[^\n]", headline);
-		while ((clear = getchar()) != '\n' && clear != EOF);//Çå¿ÕÊäÈë»º³åÇø
-		headlinecount = (unsigned short)strlen(headline); //±êÌâ×ÖÊı
-		char* headlinepoint = headline; //×Ö·û´®×ªÎª×Ö·ûÖ¸Õë
-	//¿ª±Ù´æ´¢¿Õ¼ä&¸³Öµ
-		Base_Name* BN = malloc(sizeof(Base_Name) + ((int)headlinecount + 1) * sizeof(char));
-		if (BN == NULL)
+	//ç»“æ„ä½“ä¸´æ—¶å˜é‡
+	int clear = 0;
+	unsigned short headlinecount = 0;
+	char headline[TEXT_200] = { 0 };
+	//è¾“å…¥
+	printf("\033[1;46;37mè¯·è¾“å…¥æ ‡é¢˜ï¼š\033[1;47;30m\n");
+	scanf("%[^\n]", headline);
+	while ((clear = getchar()) != '\n' && clear != EOF);//æ¸…ç©ºè¾“å…¥ç¼“å†²åŒº
+	headlinecount = (unsigned short)strlen(headline); //æ ‡é¢˜å­—æ•°
+	char* headlinepoint = headline; //å­—ç¬¦ä¸²è½¬ä¸ºå­—ç¬¦æŒ‡é’ˆ
+//å¼€è¾Ÿå­˜å‚¨ç©ºé—´&èµ‹å€¼
+	Base_Name* BN = malloc(sizeof(Base_Name) + ((int)headlinecount + 1) * sizeof(char));
+	if (BN == NULL)
+	{
+		perror("AddResource_Headline/Base_Name* BN ");
+		return;
+	}
+	memcpy(BN[0].id, id, 9);
+	memcpy(BN[0].headline, headlinepoint, (int)headlinecount + 1);
+	//æ•°æ®&æŒ‡é’ˆè½¬ç§»
+	ptrq->BM[ptrq->sz].headlinecount = headlinecount;
+	DN_sl[0]->DN[DN_sl[0]->sz] = (unsigned long*)BN;//æŒ‡é’ˆå¤åˆ¶
+	DN_sl[0]->sz++;
+	BN = NULL;
+	//DN_slæ–°å¼€è¾Ÿç©ºé—´
+	if (DN_sl[0]->sz == DN_sl[0]->capacity)
+	{
+		DN_SingleList* str1 = NULL;
+		DN_sl[0]->capacity++;
+		str1 = realloc(*DN_sl, sizeof(DN_SingleList) + sizeof(DN_TypeDefine) * ((int)DN_sl[0]->sz + 1));
+		if (str1 == NULL)
 		{
-			perror("AddResource_Headline/Base_Name* BN ");
+			perror("AddResource_Headline/DN_SingleList* str1");
 			return;
 		}
-		memcpy(BN[0].id, id, 9);
-		memcpy(BN[0].headline, headlinepoint, (int)headlinecount + 1);
-	//Êı¾İ&Ö¸Õë×ªÒÆ
-		ptrq->BM[ptrq->sz].headlinecount = headlinecount;
-		DN_sl[0]->DN[DN_sl[0]->sz] = (unsigned long*)BN;//Ö¸Õë¸´ÖÆ
-		DN_sl[0]->sz++;
-		BN = NULL;
-	//DN_slĞÂ¿ª±Ù¿Õ¼ä
-		if (DN_sl[0]->sz == DN_sl[0]->capacity)
-		{
-			DN_SingleList* str1 = NULL;
-			DN_sl[0]->capacity++;
-			str1 = realloc(*DN_sl, sizeof(DN_SingleList) + sizeof(DN_TypeDefine) * ((int)DN_sl[0]->sz + 1));
-			if (str1 == NULL)
-			{
-				perror("AddResource_Headline/DN_SingleList* str1");
-				return;
-			}
-			*DN_sl = str1;
-			str1 = NULL;
-		}
+		*DN_sl = str1;
+		str1 = NULL;
+	}
 }
-//Â¼ÈëÊı¾İ - ÎÄ±¾
+//å½•å…¥æ•°æ® - æ–‡æœ¬
 void AddResource_Context(Base_Struct* ptrq, BC_SingleList** BC_sl, char* id)
 {
-	//BC_slÁÙÊ±´æ´¢501ĞĞ
-		BC_LineList BC_T;
-		BC_LineList* BC_Temple = &BC_T;
-		BC_Temple = (BC_LineList*)malloc(sizeof(BC_LineList) + sizeof(BC_TypeDefine) * TEXT_500);//Ä¬ÈÏ501ĞĞ
-		if (BC_Temple == NULL)
-		{
-			perror("AddResource_Context/BC_LineList*");
-			return;
-		}
-	//½á¹¹ÌåÁÙÊ±±äÁ¿
-		int clear = 0;
-		unsigned short contextcount = 0;
-		char context_paragraph[TEXT_1000] = { 0 };
-		char id_line[11] = { 0 };
-		char linecount_line[301] = { 0 };
-		int lines = 0;//È·¶¨ĞĞÊı
-		int count = 0;//Êı×ÖÊı
-	printf("\033[1;46;37mÇëÊäÈëÄÚÈİ£º\033[1;47;30m\n");
+	//BC_slä¸´æ—¶å­˜å‚¨501è¡Œ
+	BC_LineList BC_T;
+	BC_LineList* BC_Temple = &BC_T;
+	BC_Temple = (BC_LineList*)malloc(sizeof(BC_LineList) + sizeof(BC_TypeDefine) * TEXT_500);//é»˜è®¤501è¡Œ
+	if (BC_Temple == NULL)
+	{
+		perror("AddResource_Context/BC_LineList*");
+		return;
+	}
+	//ç»“æ„ä½“ä¸´æ—¶å˜é‡
+	int clear = 0;
+	unsigned short contextcount = 0;
+	char context_paragraph[TEXT_1000] = { 0 };
+	char id_line[11] = { 0 };
+	char linecount_line[301] = { 0 };
+	int lines = 0;//ç¡®å®šè¡Œæ•°
+	int count = 0;//æ•°å­—æ•°
+	printf("\033[1;46;37mè¯·è¾“å…¥å†…å®¹ï¼š\033[1;47;30m\n");
 	do
 	{
-		//ÊäÈë
-			printf("\033[1;46;37mµÚ%dĞĞ:\033[1;47;30m", lines);
-			scanf("%[^\n]", context_paragraph);
-			while ((clear = getchar()) != '\n' && clear != EOF);//Çå¿ÕÊäÈë»º³åÇø
-			if (strcmp(context_paragraph, "quit") == 0) //ÎªquitÊ±ÍË³ö
-			{
-				break;
-			}
-			contextcount = (unsigned short)strlen(context_paragraph);
-			count = contextcount + count;//×ÖÊıÍ³¼Æ
-			char* contextpoint = context_paragraph;
-		//¿ª±ÙĞĞ´æ´¢¿Õ¼ä&¸³Öµ
-			Base_Context* BC = malloc(sizeof(Base_Context) + ((int)contextcount + 1) * sizeof(char));
-			if (BC == NULL)
-			{
-				perror("AddResource_Context/Base_Context* BC ");
-				break;
-			}
-			sprintf(id_line, "%s%d", id, lines);
-			if (lines < 1)
-			{
-				sprintf(linecount_line, "%d",contextcount);
-			}
-			else
-			{
+		//è¾“å…¥
+		printf("\033[1;46;37mç¬¬%dè¡Œ:\033[1;47;30m", lines);
+		scanf("%[^\n]", context_paragraph);
+		while ((clear = getchar()) != '\n' && clear != EOF);//æ¸…ç©ºè¾“å…¥ç¼“å†²åŒº
+		if (strcmp(context_paragraph, "quit") == 0) //ä¸ºquitæ—¶é€€å‡º
+		{
+			break;
+		}
+		contextcount = (unsigned short)strlen(context_paragraph);
+		count = contextcount + count;//å­—æ•°ç»Ÿè®¡
+		char* contextpoint = context_paragraph;
+		//å¼€è¾Ÿè¡Œå­˜å‚¨ç©ºé—´&èµ‹å€¼
+		Base_Context* BC = malloc(sizeof(Base_Context) + ((int)contextcount + 1) * sizeof(char));
+		if (BC == NULL)
+		{
+			perror("AddResource_Context/Base_Context* BC ");
+			break;
+		}
+		sprintf(id_line, "%s%d", id, lines);
+		if (lines < 1)
+		{
+			sprintf(linecount_line, "%d", contextcount);
+		}
+		else
+		{
 
-				sprintf(linecount_line, "%s%s%d", linecount_line, "|", contextcount);
-			}
-			memcpy(BC[0].id, id_line, 11);
-			memcpy(BC[0].context_paragraph, contextpoint, (int)contextcount + 1);
-		//Êı¾İ&Ö¸Õë×ªÒÆ
-			BC_Temple->BCL[lines] = (unsigned long*)BC;//µ¥ĞĞÖ¸Õë¸´ÖÆ
-			BC = NULL;
-			lines++;
+			sprintf(linecount_line, "%s%s%d", linecount_line, "|", contextcount);
+		}
+		memcpy(BC[0].id, id_line, 11);
+		memcpy(BC[0].context_paragraph, contextpoint, (int)contextcount + 1);
+		//æ•°æ®&æŒ‡é’ˆè½¬ç§»
+		BC_Temple->BCL[lines] = (unsigned long*)BC;//å•è¡ŒæŒ‡é’ˆå¤åˆ¶
+		BC = NULL;
+		lines++;
 	} while (1);
 
-	//BC_slÕıÊ½´æ´¢linesĞĞ
-		BC_LineList* BC_Formal = malloc(sizeof(BC_LineList) + sizeof(BC_TypeDefine) * lines);
-		if (BC_Formal == NULL)
+	//BC_slæ­£å¼å­˜å‚¨linesè¡Œ
+	BC_LineList* BC_Formal = malloc(sizeof(BC_LineList) + sizeof(BC_TypeDefine) * lines);
+	if (BC_Formal == NULL)
+	{
+		return;
+	}
+	BC_Formal->line = lines;
+	//BC_slä¸´æ—¶å­˜å‚¨è½¬æ­£å¼
+	for (int i = 0; i < lines; i++)
+	{
+		BC_Formal->BCL[i] = BC_Temple->BCL[i];//å•è¡ŒæŒ‡é’ˆå¤åˆ¶
+	}
+	free(BC_Temple);
+	//æ•°æ®&æŒ‡é’ˆè½¬ç§»
+	ptrq->BM[ptrq->sz].line = lines;
+	ptrq->BM[ptrq->sz].contextcount = count;
+	strcpy(ptrq->BM[ptrq->sz].linecount, linecount_line);
+	ptrq->sz++;
+	BC_sl[0]->DC[BC_sl[0]->sz] = (BCL_TypeDefine)BC_Formal;//æŒ‡é’ˆå¤åˆ¶
+	BC_Formal = NULL;
+	BC_sl[0]->sz++;
+	//BC_slæ–°å¼€è¾Ÿç©ºé—´
+	if (BC_sl[0]->sz == BC_sl[0]->capacity)
+	{
+		BC_SingleList* str1 = NULL;
+		BC_sl[0]->capacity++;
+		str1 = realloc(*BC_sl, sizeof(BC_SingleList) + sizeof(BCL_TypeDefine) * ((int)BC_sl[0]->sz + 1));
+		if (str1 == NULL)
 		{
+			perror("AddResource_Context/BC_SingleList* str1");
 			return;
 		}
-		BC_Formal->line = lines;
-	//BC_slÁÙÊ±´æ´¢×ªÕıÊ½
-		for (int i = 0; i < lines; i++)
-		{
-			BC_Formal->BCL[i] = BC_Temple->BCL[i];//µ¥ĞĞÖ¸Õë¸´ÖÆ
-		}
-		free(BC_Temple);
-	//Êı¾İ&Ö¸Õë×ªÒÆ
-		ptrq->BM[ptrq->sz].line = lines;
-		ptrq->BM[ptrq->sz].contextcount = count;
-		strcpy(ptrq->BM[ptrq->sz].linecount, linecount_line);
-		ptrq->sz++;
-		BC_sl[0]->DC[BC_sl[0]->sz] = (BCL_TypeDefine)BC_Formal;//Ö¸Õë¸´ÖÆ
-		BC_Formal = NULL;
-		BC_sl[0]->sz++;
-	//BC_slĞÂ¿ª±Ù¿Õ¼ä
-		if (BC_sl[0]->sz == BC_sl[0]->capacity)
-		{
-			BC_SingleList* str1 = NULL;
-			BC_sl[0]->capacity++;
-			str1 = realloc(*BC_sl, sizeof(BC_SingleList) + sizeof(BCL_TypeDefine) * ((int)BC_sl[0]->sz + 1));
-			if (str1 == NULL)
-			{
-				perror("AddResource_Context/BC_SingleList* str1");
-				return;
-			}
-			*BC_sl = str1;
-			str1 = NULL;
-		}
+		*BC_sl = str1;
+		str1 = NULL;
+	}
 }
 
-//²éÑ¯
+//æŸ¥è¯¢
 void SeacrhResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl)
 {
-	//ÁÙÊ±±äÁ¿
-		unsigned int i = 0;
-		unsigned short j = 0;
-		unsigned short linecount = 0;
+	//ä¸´æ—¶å˜é‡
+	unsigned int i = 0;
+	unsigned short j = 0;
+	unsigned short linecount = 0;
 	while (1)
 	{
 		if (ptrq->sz == 0)
 		{
 			printf("          -----------------------------           \n");
-			printf("          |         ÎŞÊäÈëÊı¾İ        |           \n");
+			printf("          |         æ— è¾“å…¥æ•°æ®        |           \n");
 			printf("          -----------------------------           \n");
 			system("pause");
 			break;
@@ -313,26 +313,26 @@ void SeacrhResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 		for (i = 0; i < ptrq->sz; i++)
 		{
 			Base_Name* BN = NULL;
-			BN = (Base_Name*)DN_sl[0]->DN[i];//Ö¸Õë¸´ÖÆ
-			printf("²éÑ¯ÄÚÈİÈçÏÂ£º\n");
-			printf("[ Ê± ¼ä ]£º%dÄê%dÔÂ%dÈÕ\t\t[ ±ê Ìâ ]£º%s\n",
+			BN = (Base_Name*)DN_sl[0]->DN[i];//æŒ‡é’ˆå¤åˆ¶
+			printf("æŸ¥è¯¢å†…å®¹å¦‚ä¸‹ï¼š\n");
+			printf("[ æ—¶ é—´ ]ï¼š%då¹´%dæœˆ%dæ—¥\t\t[ æ ‡ é¢˜ ]ï¼š%s\n",
 				ptrq->BM[i].year,
 				ptrq->BM[i].month,
 				ptrq->BM[i].day,
 				BN->headline);
-			printf("[ Õı ÎÄ ]£º\n");
+			printf("[ æ­£ æ–‡ ]ï¼š\n");
 			Base_Context* BC = NULL;
 			BC_LineList* BCA = NULL;
 			BCA = (BC_LineList*)BC_sl[0]->DC[i];
 			for (j = 0; j < ptrq->BM[i].line; j++)
 			{
 				BC = (Base_Context*)BCA->BCL[j];
-				printf("    %s\n",BC->context_paragraph);
+				printf("    %s\n", BC->context_paragraph);
 			}
 		}
 		printf("          -----------------------------           \n");
-		printf("                     Êä³öÍê³É                     \n");
-		printf("               ×Ü¼ÆÊä³ö %d ¸öÊı¾İ\n", i);
+		printf("                     è¾“å‡ºå®Œæˆ                     \n");
+		printf("               æ€»è®¡è¾“å‡º %d ä¸ªæ•°æ®\n", i);
 		printf("          -----------------------------           \n");
 		system("pause");
 		break;
@@ -345,88 +345,88 @@ static int FindHeadlineResource(DN_SingleList** DN_sl, char Headline[])
 	for (i = 0; i < DN_sl[0]->sz; i++)
 	{
 		Base_Name* BN = NULL;
-		BN = (Base_Name*)DN_sl[0]->DN[i];//Ö¸Õë¸´ÖÆ
+		BN = (Base_Name*)DN_sl[0]->DN[i];//æŒ‡é’ˆå¤åˆ¶
 		if (strcmp(BN->headline, Headline) == 0)
 		{
 			return i;
 		}
 	}
-	return -1;//ÕÒ²»µ½
+	return -1;//æ‰¾ä¸åˆ°
 }
-//É¾³ıÄÚÈİ
+//åˆ é™¤å†…å®¹
 void DelateResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl)
 {
-	//ÁÙÊ±±äÁ¿
-		char Headline[TEXT_200];
-		unsigned int i = 0;
-	//È·ÈÏÈİÁ¿
-		if (ptrq->sz == 0)
-		{
-			printf("Î´¼ÇÂ¼ÄÚÈİ,3Ãëºó×Ô¶¯·µ»Ø¡£\n");
-			Sleep(3000);
-			return;
-		}
-	//ÊäÈë
-		printf("ÇëÊäÈëÒªÉ¾³ıµÄÄÚÈİ±êÌâ£º");
-		scanf("%s", Headline);
-	//²éÕÒ¶ÔÓ¦ÄÚÈİ
-		int pos = FindHeadlineResource(DN_sl, Headline);
-		if (pos == -1)
-		{
-			printf("Î´ÕÒµ½Ïà¹ØÄÚÈİ,3Ãëºó×Ô¶¯·µ»Ø¡£\n");
-			Sleep(3000);
-			return;
-		}
-	//ÊÍ·ÅÎŞÓÃ¿Õ¼ä
-		Base_Name* BN = NULL;
-		BN = (Base_Name*)DN_sl[0]->DN[pos];//Ö¸Õë¸´ÖÆ
-		free(BN);
-		BN = NULL;
-
-		Base_Context* BC = NULL;
-		BC_LineList* BCA = NULL;
-		BCA = (BC_LineList*)BC_sl[0]->DC[pos];
-		for (i = 0; i < ptrq->BM[pos].line; i++)
-		{
-			BC = (Base_Context*)BCA->BCL[i];
-			free(BC);
-			BC = NULL;
-		}
-		free(BCA);
-		BCA = NULL;
-	//É¾³ı
-		for (i = pos; i < ptrq->sz; i++)
-		{
-			ptrq->BM[i] = ptrq->BM[i + 1];
-			BC_sl[0]->DC[i] = BC_sl[0]->DC[i + 1];
-			DN_sl[0]->DN[i] = DN_sl[0]->DN[i + 1];
-		}
-		ptrq->sz--;
-		BC_sl[0]->sz--;
-		DN_sl[0]->sz--;
-	printf("É¾³ı³É¹¦,3Ãëºó×Ô¶¯·µ»Ø¡£\n");
-	Sleep(3000);
-}
-
-//ĞŞ¸ÄÎÄ¼ş
-void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl)
-{
-	//ÁÙÊ±±äÁ¿
-		char Headline[TEXT_200];
-	//ÊäÈë
-		printf("ÇëÊäÈëÒªĞŞ¸ÄµÄ±êÌâÃû³Æ:");
-		scanf("%s", Headline);
-	//²éÕÒ¶ÔÓ¦ÄÚÈİ
+	//ä¸´æ—¶å˜é‡
+	char Headline[TEXT_200];
+	unsigned int i = 0;
+	//ç¡®è®¤å®¹é‡
+	if (ptrq->sz == 0)
+	{
+		printf("æœªè®°å½•å†…å®¹,3ç§’åè‡ªåŠ¨è¿”å›ã€‚\n");
+		Sleep(3000);
+		return;
+	}
+	//è¾“å…¥
+	printf("è¯·è¾“å…¥è¦åˆ é™¤çš„å†…å®¹æ ‡é¢˜ï¼š");
+	scanf("%s", Headline);
+	//æŸ¥æ‰¾å¯¹åº”å†…å®¹
 	int pos = FindHeadlineResource(DN_sl, Headline);
 	if (pos == -1)
 	{
-		printf("Î´ÕÒµ½Ïà¹ØÄÚÈİ,3Ãëºó×Ô¶¯·µ»Ø¡£\n");
+		printf("æœªæ‰¾åˆ°ç›¸å…³å†…å®¹,3ç§’åè‡ªåŠ¨è¿”å›ã€‚\n");
+		Sleep(3000);
+		return;
+	}
+	//é‡Šæ”¾æ— ç”¨ç©ºé—´
+	Base_Name* BN = NULL;
+	BN = (Base_Name*)DN_sl[0]->DN[pos];//æŒ‡é’ˆå¤åˆ¶
+	free(BN);
+	BN = NULL;
+
+	Base_Context* BC = NULL;
+	BC_LineList* BCA = NULL;
+	BCA = (BC_LineList*)BC_sl[0]->DC[pos];
+	for (i = 0; i < ptrq->BM[pos].line; i++)
+	{
+		BC = (Base_Context*)BCA->BCL[i];
+		free(BC);
+		BC = NULL;
+	}
+	free(BCA);
+	BCA = NULL;
+	//åˆ é™¤
+	for (i = pos; i < ptrq->sz; i++)
+	{
+		ptrq->BM[i] = ptrq->BM[i + 1];
+		BC_sl[0]->DC[i] = BC_sl[0]->DC[i + 1];
+		DN_sl[0]->DN[i] = DN_sl[0]->DN[i + 1];
+	}
+	ptrq->sz--;
+	BC_sl[0]->sz--;
+	DN_sl[0]->sz--;
+	printf("åˆ é™¤æˆåŠŸ,3ç§’åè‡ªåŠ¨è¿”å›ã€‚\n");
+	Sleep(3000);
+}
+
+//ä¿®æ”¹æ–‡ä»¶
+void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl)
+{
+	//ä¸´æ—¶å˜é‡
+	char Headline[TEXT_200];
+	//è¾“å…¥
+	printf("è¯·è¾“å…¥è¦ä¿®æ”¹çš„æ ‡é¢˜åç§°:");
+	scanf("%s", Headline);
+	//æŸ¥æ‰¾å¯¹åº”å†…å®¹
+	int pos = FindHeadlineResource(DN_sl, Headline);
+	if (pos == -1)
+	{
+		printf("æœªæ‰¾åˆ°ç›¸å…³å†…å®¹,3ç§’åè‡ªåŠ¨è¿”å›ã€‚\n");
 		Sleep(3000);
 		return;
 	}
 	else
 	{
-		printf("\033[1;46;37mÇëÊäÈë Äê ÔÂ ÈÕ [Àı£º20220101]£º\033[1;47;30m\n");
+		printf("\033[1;46;37mè¯·è¾“å…¥ å¹´ æœˆ æ—¥ [ä¾‹ï¼š20220101]ï¼š\033[1;47;30m\n");
 		scanf("%4hu%2hu%2hu", &(ptrq->BM[pos].year), &(ptrq->BM[pos].month), &(ptrq->BM[pos].day));
 		while (1)
 		{
@@ -434,118 +434,118 @@ void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 			{
 				if (ptrq->BM[pos].day > 0 && ptrq->BM[pos].day < 32)
 				{
-						int clear = 0;
-						unsigned int i = 0;
-						//ÊÍ·ÅÄÚ´æ
-						Base_Name* BN = NULL;
-						BN = (Base_Name*)DN_sl[0]->DN[pos];//Ö¸Õë¸´ÖÆ					
-						free(BN);
-						BN = NULL;
+					int clear = 0;
+					unsigned int i = 0;
+					//é‡Šæ”¾å†…å­˜
+					Base_Name* BN = NULL;
+					BN = (Base_Name*)DN_sl[0]->DN[pos];//æŒ‡é’ˆå¤åˆ¶					
+					free(BN);
+					BN = NULL;
 
-						Base_Context* BC = NULL;
-						BC_LineList* BCA = NULL;
-						BCA = (BC_LineList*)BC_sl[0]->DC[pos];
-						for (i = 0; i < ptrq->BM[pos].line; i++)
+					Base_Context* BC = NULL;
+					BC_LineList* BCA = NULL;
+					BCA = (BC_LineList*)BC_sl[0]->DC[pos];
+					for (i = 0; i < ptrq->BM[pos].line; i++)
+					{
+						BC = (Base_Context*)BCA->BCL[i];
+						free(BC);
+						BC = NULL;
+					}
+					free(BCA);
+					BCA = NULL;
+					//æ ‡é¢˜
+						//ç»“æ„ä½“ä¸´æ—¶å˜é‡
+					unsigned short headlinecount = 0;
+					char headline[TEXT_200] = { 0 };
+					char id[9] = { 0 };
+					//åˆ›å»ºidæ ‡è¯†
+					Randomid(id);
+					memcpy(ptrq->BM[ptrq->sz].id, id, 9);//å¤åˆ¶id
+					//è¾“å…¥
+					printf("\033[1;46;37mè¯·è¾“å…¥æ ‡é¢˜ï¼š\033[1;47;30m\n");
+					scanf("%[^\n]", headline);
+					while ((clear = getchar()) != '\n' && clear != EOF);//æ¸…ç©ºè¾“å…¥ç¼“å†²åŒº
+					headlinecount = (unsigned short)strlen(headline); //æ ‡é¢˜å­—æ•°
+					char* headlinepoint = headline; //å­—ç¬¦ä¸²è½¬ä¸ºå­—ç¬¦æŒ‡é’ˆ
+					//å¼€è¾Ÿå­˜å‚¨ç©ºé—´&èµ‹å€¼
+					Base_Name* BN_temp = malloc(sizeof(Base_Name) + (headlinecount + 1) * sizeof(char));
+					if (BN_temp == NULL)
+					{
+						perror("ModifyResource/Base_Name* BN ");
+						return;
+					}
+					memcpy(BN_temp[0].id, id, 9);
+					memcpy(BN_temp[0].headline, headlinepoint, headlinecount + 1);
+					//æ•°æ®&æŒ‡é’ˆè½¬ç§»
+					ptrq->BM[pos].headlinecount = headlinecount;
+					DN_sl[0]->DN[pos] = (unsigned long*)BN_temp;//æŒ‡é’ˆå¤åˆ¶
+					BN_temp = NULL;
+					//å†…å®¹
+						//BC_slä¸´æ—¶å­˜å‚¨501è¡Œ
+					BC_LineList BC_T;
+					BC_LineList* BC_Temple = &BC_T;
+					BC_Temple = (BC_LineList*)malloc(sizeof(BC_LineList) + sizeof(BC_TypeDefine) * TEXT_500);//é»˜è®¤501è¡Œ
+					if (BC_Temple == NULL)
+					{
+						perror("ModifyResource/BC_LineList*");
+						return;
+					}
+					//ç»“æ„ä½“ä¸´æ—¶å˜é‡
+					unsigned short contextcount = 0;
+					char context_paragraph[TEXT_1000] = { 0 };
+					char id_line[11] = { 0 };
+					int lines = 0;//ç¡®å®šè¡Œæ•°
+					int count = 0;//æ•°å­—æ•°
+					printf("\033[1;46;37mè¯·è¾“å…¥å†…å®¹ï¼š\033[1;47;30m\n");
+					do
+					{
+						//è¾“å…¥
+						printf("\033[1;46;37mç¬¬%dè¡Œ:\033[1;47;30m", lines);
+						scanf("%[^\n]", context_paragraph);
+						while ((clear = getchar()) != '\n' && clear != EOF);//æ¸…ç©ºè¾“å…¥ç¼“å†²åŒº
+						if (strcmp(context_paragraph, "quit") == 0) //ä¸ºquitæ—¶é€€å‡º
 						{
-							BC = (Base_Context*)BCA->BCL[i];
-							free(BC);
-							BC = NULL;
+							break;
 						}
-						free(BCA);
-						BCA = NULL;
-					//±êÌâ
-						//½á¹¹ÌåÁÙÊ±±äÁ¿
-						unsigned short headlinecount = 0;
-						char headline[TEXT_200] = { 0 };
-						char id[9] = { 0 };
-						//´´½¨id±êÊ¶
-						Randomid(id);
-						memcpy(ptrq->BM[ptrq->sz].id, id, 9);//¸´ÖÆid
-						//ÊäÈë
-						printf("\033[1;46;37mÇëÊäÈë±êÌâ£º\033[1;47;30m\n");
-						scanf("%[^\n]", headline);
-						while ((clear = getchar()) != '\n' && clear != EOF);//Çå¿ÕÊäÈë»º³åÇø
-						headlinecount = (unsigned short)strlen(headline); //±êÌâ×ÖÊı
-						char* headlinepoint = headline; //×Ö·û´®×ªÎª×Ö·ûÖ¸Õë
-						//¿ª±Ù´æ´¢¿Õ¼ä&¸³Öµ
-						Base_Name* BN_temp = malloc(sizeof(Base_Name) + (headlinecount + 1) * sizeof(char));
-						if (BN_temp == NULL)
+						contextcount = (unsigned short)strlen(context_paragraph);
+						count = contextcount + count;//å­—æ•°ç»Ÿè®¡
+						char* contextpoint = context_paragraph;
+						//å¼€è¾Ÿè¡Œå­˜å‚¨ç©ºé—´&èµ‹å€¼
+						Base_Context* BC = malloc(sizeof(Base_Context) + (contextcount + 1) * sizeof(char));
+						if (BC == NULL)
 						{
-							perror("ModifyResource/Base_Name* BN ");
-							return;
+							perror("ModifyResource/Base_Context* BC ");
+							break;
 						}
-						memcpy(BN_temp[0].id, id, 9);
-						memcpy(BN_temp[0].headline, headlinepoint, headlinecount + 1);
-						//Êı¾İ&Ö¸Õë×ªÒÆ
-						ptrq->BM[pos].headlinecount = headlinecount;
-						DN_sl[0]->DN[pos] = (unsigned long*)BN_temp;//Ö¸Õë¸´ÖÆ
-						BN_temp = NULL;
-					//ÄÚÈİ
-						//BC_slÁÙÊ±´æ´¢501ĞĞ
-						BC_LineList BC_T;
-						BC_LineList* BC_Temple = &BC_T;
-						BC_Temple = (BC_LineList*)malloc(sizeof(BC_LineList) + sizeof(BC_TypeDefine) * TEXT_500);//Ä¬ÈÏ501ĞĞ
-						if (BC_Temple == NULL)
-						{
-							perror("ModifyResource/BC_LineList*");
-							return;
-						}
-						//½á¹¹ÌåÁÙÊ±±äÁ¿
-						unsigned short contextcount = 0;
-						char context_paragraph[TEXT_1000] = { 0 };
-						char id_line[11] = { 0 };
-						int lines = 0;//È·¶¨ĞĞÊı
-						int count = 0;//Êı×ÖÊı
-						printf("\033[1;46;37mÇëÊäÈëÄÚÈİ£º\033[1;47;30m\n");
-						do
-						{
-							//ÊäÈë
-							printf("\033[1;46;37mµÚ%dĞĞ:\033[1;47;30m", lines);
-							scanf("%[^\n]", context_paragraph);
-							while ((clear = getchar()) != '\n' && clear != EOF);//Çå¿ÕÊäÈë»º³åÇø
-							if (strcmp(context_paragraph, "quit") == 0) //ÎªquitÊ±ÍË³ö
-							{
-								break;
-							}
-							contextcount = (unsigned short)strlen(context_paragraph);
-							count = contextcount + count;//×ÖÊıÍ³¼Æ
-							char* contextpoint = context_paragraph;
-							//¿ª±ÙĞĞ´æ´¢¿Õ¼ä&¸³Öµ
-							Base_Context* BC = malloc(sizeof(Base_Context) + (contextcount + 1) * sizeof(char));
-							if (BC == NULL)
-							{
-								perror("ModifyResource/Base_Context* BC ");
-								break;
-							}
-							sprintf(id_line, "%s%d", id, lines);
-							memcpy(BC[0].id, id_line, 11);
-							memcpy(BC[0].context_paragraph, contextpoint, contextcount + 1);
-							//Êı¾İ&Ö¸Õë×ªÒÆ
-							BC_Temple->BCL[lines] = (unsigned long*)BC;//µ¥ĞĞÖ¸Õë¸´ÖÆ
-							BC = NULL;
-							lines++;
-						} while (1);
-						//BC_slÕıÊ½´æ´¢linesĞĞ
-						BC_LineList* BC_Formal = malloc(sizeof(BC_LineList) + sizeof(BC_TypeDefine) * lines);
-						if (BC_Formal == NULL)
-						{
-							return;
-						}
-						BC_Formal->line = lines;
-						//BC_slÁÙÊ±´æ´¢×ªÕıÊ½
-						for (int i = 0; i < lines; i++)
-						{
-							BC_Formal->BCL[i] = BC_Temple->BCL[i];//µ¥ĞĞÖ¸Õë¸´ÖÆ
-						}
-						free(BC_Temple);
-						//Êı¾İ&Ö¸Õë×ªÒÆ
-						ptrq->BM[pos].line = lines;
-						ptrq->BM[pos].contextcount = count;
-						BC_sl[0]->DC[pos] = (BCL_TypeDefine)BC_Formal;//Ö¸Õë¸´ÖÆ
-						BC_Formal = NULL;
+						sprintf(id_line, "%s%d", id, lines);
+						memcpy(BC[0].id, id_line, 11);
+						memcpy(BC[0].context_paragraph, contextpoint, contextcount + 1);
+						//æ•°æ®&æŒ‡é’ˆè½¬ç§»
+						BC_Temple->BCL[lines] = (unsigned long*)BC;//å•è¡ŒæŒ‡é’ˆå¤åˆ¶
+						BC = NULL;
+						lines++;
+					} while (1);
+					//BC_slæ­£å¼å­˜å‚¨linesè¡Œ
+					BC_LineList* BC_Formal = malloc(sizeof(BC_LineList) + sizeof(BC_TypeDefine) * lines);
+					if (BC_Formal == NULL)
+					{
+						return;
+					}
+					BC_Formal->line = lines;
+					//BC_slä¸´æ—¶å­˜å‚¨è½¬æ­£å¼
+					for (int i = 0; i < lines; i++)
+					{
+						BC_Formal->BCL[i] = BC_Temple->BCL[i];//å•è¡ŒæŒ‡é’ˆå¤åˆ¶
+					}
+					free(BC_Temple);
+					//æ•°æ®&æŒ‡é’ˆè½¬ç§»
+					ptrq->BM[pos].line = lines;
+					ptrq->BM[pos].contextcount = count;
+					BC_sl[0]->DC[pos] = (BCL_TypeDefine)BC_Formal;//æŒ‡é’ˆå¤åˆ¶
+					BC_Formal = NULL;
 
 					printf("          -----------------------------           \n");
-					printf("          |         ³É¹¦Â¼Èë£¡        |           \n");
+					printf("          |         æˆåŠŸå½•å…¥ï¼        |           \n");
 					printf("          -----------------------------           \n");
 					system("pause");
 					break;
@@ -553,8 +553,8 @@ void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 				else
 				{
 					printf("          -----------------------------           \n");
-					printf("           ÈÕÆÚ·ÇÕı³£Êı¾İ£¬ÇëÈ·ÈÏÊäÈë£¡           \n");
-					printf("                2Ãëºó·µ»ØÊäÈë½çÃæ                 \n");
+					printf("           æ—¥æœŸéæ­£å¸¸æ•°æ®ï¼Œè¯·ç¡®è®¤è¾“å…¥ï¼           \n");
+					printf("                2ç§’åè¿”å›è¾“å…¥ç•Œé¢                 \n");
 					printf("          -----------------------------           \n");
 					Sleep(2000);
 					break;
@@ -563,8 +563,8 @@ void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 			else
 			{
 				printf("          -----------------------------           \n");
-				printf("           ÔÂ·İ·ÇÕı³£Êı¾İ£¬ÇëÈ·ÈÏÊäÈë£¡           \n");
-				printf("                2Ãëºó·µ»ØÊäÈë½çÃæ                 \n");
+				printf("           æœˆä»½éæ­£å¸¸æ•°æ®ï¼Œè¯·ç¡®è®¤è¾“å…¥ï¼           \n");
+				printf("                2ç§’åè¿”å›è¾“å…¥ç•Œé¢                 \n");
 				printf("          -----------------------------           \n");
 				Sleep(2000);
 				break;
@@ -573,27 +573,27 @@ void ModifyResource(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 	}
 }
 
-//Ïú»ÙÄÚ´æ
+//é”€æ¯å†…å­˜
 void Destorycontact(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC_sl)
 {
-	//ÁÙÊ±±äÁ¿
+	//ä¸´æ—¶å˜é‡
 	unsigned int i = 0;
 	unsigned int j = 0;
-	//Ïú»ÙÃû³Æ
+	//é”€æ¯åç§°
 	for (i = 0; i < DN_sl[0]->sz; i++)
 	{
 		if (DN_sl[0]->DN[i] != NULL)
 		{
 			Base_Name* BN = NULL;
-			BN = (Base_Name*)DN_sl[0]->DN[i];//Ö¸Õë¸´ÖÆ
+			BN = (Base_Name*)DN_sl[0]->DN[i];//æŒ‡é’ˆå¤åˆ¶
 			free(BN);
 			BN = NULL;
 		}
 	}
-	//Ïú»ÙĞĞ
+	//é”€æ¯è¡Œ
 	Base_Context* BC = NULL;
 	BC_LineList* BCA = NULL;
-	for(i = 0; i < BC_sl[0]->sz; i++)
+	for (i = 0; i < BC_sl[0]->sz; i++)
 	{
 		BCA = (BC_LineList*)BC_sl[0]->DC[i];
 		for (j = 0; j < ptrq->BM[i].line; j++)
@@ -605,23 +605,23 @@ void Destorycontact(Base_Struct* ptrq, DN_SingleList** DN_sl, BC_SingleList** BC
 		free(BCA);
 		BCA = NULL;
 	}
-	//Ïú»ÙÖ÷½á¹¹
-		free(ptrq->BM);
-		ptrq->BM = NULL;
-		ptrq->capacity = 0;
-		ptrq->sz = 0;
-		ptrq = NULL;
-	//Ïú»ÙDN_sl
-		*DN_sl[0]->DN = NULL;
-		DN_sl[0]->capacity = 0;
-		DN_sl[0]->sz = 0;
-		free(*DN_sl);
-		*DN_sl = NULL;
-	//Ïú»ÙBC_sl
-		*BC_sl[0]->DC = NULL;
-		BC_sl[0]->capacity = 0;
-		BC_sl[0]->sz = 0;
-		BC_sl[0]->alline = 0;
-		free(*BC_sl);
-		*BC_sl = NULL;
+	//é”€æ¯ä¸»ç»“æ„
+	free(ptrq->BM);
+	ptrq->BM = NULL;
+	ptrq->capacity = 0;
+	ptrq->sz = 0;
+	ptrq = NULL;
+	//é”€æ¯DN_sl
+	*DN_sl[0]->DN = NULL;
+	DN_sl[0]->capacity = 0;
+	DN_sl[0]->sz = 0;
+	free(*DN_sl);
+	*DN_sl = NULL;
+	//é”€æ¯BC_sl
+	*BC_sl[0]->DC = NULL;
+	BC_sl[0]->capacity = 0;
+	BC_sl[0]->sz = 0;
+	BC_sl[0]->alline = 0;
+	free(*BC_sl);
+	*BC_sl = NULL;
 }
