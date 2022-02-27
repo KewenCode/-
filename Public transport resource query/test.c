@@ -99,6 +99,18 @@ int main()
 			input_1 = 0;//转到退出
 			break;
 		case Manage_Function: //进入 管理功能 目录
+			char Username[128] = { 0 };
+			char Password[128] = { 0 };
+			printf("请输入用户名:->");
+			scanf("%s", Username);
+			printf("请输入密码:->");
+			scanf("%s", Password);
+			int Choice = Login(Username, Password);
+			if (Choice == 1 || Choice == 3 || Choice == 4)
+			{
+				system("cls");
+				break;
+			}
 			system("cls");
 			do
 			{

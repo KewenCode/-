@@ -41,118 +41,179 @@ char* GBK_UTF8_Trans(char text[])
     return utf8buffer;
 }
 
-void BuslineExpelModel(sqlite3* db, int* ret, const char* zSql,char** ExpelLineReturn)
+int Login(const char* Username, char* Password)
 {
-    char** result;
-    int sz = 0, comple = 0, row, col, i, j;
+    sqlite3* ppdb;
+    char** SQLiteResult = NULL;
+    int Row = 0, Col = 0;
+    int ret = sqlite3_open(".\\Date\\test.db", &ppdb);
+    if (ret != SQLITE_OK)
+    {
+        printf("sqlite3_open:%s\n", sqlite3_errmsg(ppdb));
+        exit(1);
+    }
+    char SQL_Username[128] = { 0 };
+    memset(SQL_Username, 0, sizeof(SQL_Username));
+    //char SQL_Password[128] = { 0 };
+    //memset(SQL_Password, 0, sizeof(SQL_Password));
+    //sprintf(SQL_Password, "SELECT * FROM User WHERE context GLOB '*%s*';", Password);
+    sprintf(SQL_Username, "SELECT * FROM User WHERE Name GLOB '*%s*';", Username);
+    ret = sqlite3_get_table(ppdb, GBK_UTF8_Trans(SQL_Username), &SQLiteResult, &Row, &Col, NULL);
+    if (ret != SQLITE_OK)
+    {
+        printf("sqlite3_get_table:%s\n", sqlite3_errmsg(ppdb));
+        exit(1);
+    }
+    if (Row == 0)
+    {
+        printf("用户名输入错误！\n");
+        system("pause");
+        return 1;
+    }
+    else if (strcmp(SQLiteResult[Col + 1], GBK_UTF8_Trans(Password)) == 0)
+    {
+        return 2;
+    }
+    else if (strcmp(SQLiteResult[Col + 1], GBK_UTF8_Trans(Password)) != 0)
+    {
+        printf("密码输入错误！\n");
+        system("pause");
+        return 3;
+    }
+    else
+    {
+        printf("return 4\n");
+        system("pause");
+        return 4;
+    }
+}
 
-    //循环搜寻前缀0-9
+void BuslineExpelModel(sqlite3* db, const char* zSql, int* ret, char** ExpelLineReturn)
+{
+    //存储ID结构体
     typedef struct ID
     {
         char id[9];
     }ID;
-    ID* tmp = malloc(sizeof(ID));
-    ID* tmp_1 = NULL;
-
-    char ExpelLineLetter[] = "1|2|3|4|5|6|7|8|9|0|Y";
-    char* delim = "|";
+    ID* IDStock = malloc(sizeof(ID));
+    ID* IDStock_NullPointer = NULL;
+    //变量&定义
+    char** SQLiteResult;
+    int ExiseSQLiteResult_Num = 0, Strcmp_Compare = 0, Row, Col, i, j;
+    //前缀字符
+    char ExpelLineLetter[] = "1|2|3|4|5|6|7|8|9|0|Y";//定义前缀
+    char* Separator = "|";
     char* Letter;
-    Letter = strtok(ExpelLineLetter, delim);
+    Letter = strtok(ExpelLineLetter, Separator);
+    //循环添加前缀
     while (Letter != NULL)
     {
-        char busline[10] = { 0 };
-        sprintf(busline, "%s", Letter);
-        Letter = strtok(NULL, delim);
-        strcat(busline, zSql);
-        strcat(busline, "路");
-        char sql_temp[128] = { 0 };
-        sprintf(sql_temp, "SELECT * FROM Date_2016 WHERE context GLOB '*%s*';", busline);
-        *ret = sqlite3_get_table(db, GBK_UTF8_Trans(sql_temp), &result, &row, &col, NULL);
+        //存储前缀查询线路名
+        char BusLine_Extra[10] = { 0 };
+        char SQL_BusLine_Extra[128] = { 0 };
+        sprintf(BusLine_Extra, "%s", Letter);//添加前缀
+        Letter = strtok(NULL, Separator);//读取下一个前缀
+        strcat(BusLine_Extra, zSql);
+        strcat(BusLine_Extra, "路");
+        sprintf(SQL_BusLine_Extra, "SELECT * FROM Date_2016 WHERE context GLOB '*%s*';", BusLine_Extra);
+        *ret = sqlite3_get_table(db, GBK_UTF8_Trans(SQL_BusLine_Extra), &SQLiteResult, &Row, &Col, NULL);//使用SQL语句
         if (*ret != SQLITE_OK)
         {
             printf("sqlite3_get_table:%s\n", sqlite3_errmsg(db));
             exit(1);
         }
-        sz += row;
-        if (row != 0)
+        //结果行数自加
+        //ExiseSQLiteResult_Num定义为0，不能加入循环内，否则realloc为free
+        ExiseSQLiteResult_Num += Row;
+        if (Row != 0)
         {
-            tmp_1 = realloc(tmp, sz * sizeof(ID));
-            if (tmp_1 != NULL)
+            IDStock_NullPointer = realloc(IDStock, ExiseSQLiteResult_Num * sizeof(ID));
+            //开辟空间判断，不成功跳过
+            if (IDStock_NullPointer != NULL)
             {
-                tmp = tmp_1;
-                tmp_1 = NULL;
+                IDStock = IDStock_NullPointer;
+                IDStock_NullPointer = NULL;
             }
-            for (j = sz - row; j < sz; j++)
+            //ID存储
+            for (j = ExiseSQLiteResult_Num - Row; j < ExiseSQLiteResult_Num; j++)
             {
-                memcpy(tmp[j].id, result[col], 9);
-                col += 10;
+                memcpy(IDStock[j].id, SQLiteResult[Col], 9);
+                Col += 10;
             }
         }
-
     }
-    char BuslineResult[10] = { 0 };
-    strcat(BuslineResult, zSql);
-    strcat(BuslineResult, "路");
-    char sql[128] = { 0 };
-    sprintf(sql, "SELECT * FROM Date_2016 WHERE context GLOB '*%s*';", BuslineResult);
-    *ret = sqlite3_get_table(db, GBK_UTF8_Trans(sql), &result, &row, &col, NULL);
+    //存储查询线路名
+    char BusLine_Base[10] = { 0 };
+    char SQL_BusLine_Base[128] = { 0 };
+    strcat(BusLine_Base, zSql);
+    strcat(BusLine_Base, "路");
+    sprintf(SQL_BusLine_Base, "SELECT * FROM Date_2016 WHERE context GLOB '*%s*';", BusLine_Base);
+    *ret = sqlite3_get_table(db, GBK_UTF8_Trans(SQL_BusLine_Base), &SQLiteResult, &Row, &Col, NULL);//使用SQL语句
     if (*ret != SQLITE_OK)
     {
         printf("sqlite3_get_table:%s\n", sqlite3_errmsg(db));
         exit(1);
     }
-    for (i = 0; i < row; i++)
+    //与前缀线路名ID对比，获得*ExpelLineReturn字符串
+    //相同返回 “0|”，不同返回 “1|”
+    for (i = 0; i < Row; i++)
     {
-        if (sz == 0)
+        if (ExiseSQLiteResult_Num == 0)
         {
+            //ExiseSQLiteResult_Num为0，每次添加“1|”
             strcat(*ExpelLineReturn, "1|");
         }
         else
         {
-            for (j = 0; j < sz; j++)
+            //遍历结构体中所有ID
+            for (j = 0; j < ExiseSQLiteResult_Num; j++)
             {
-                comple = strcmp(result[col], tmp[j].id);
-                if (comple == 0)
+                Strcmp_Compare = strcmp(SQLiteResult[Col], IDStock[j].id);
+                if (Strcmp_Compare == 0)
                 {
-                    strcat(*ExpelLineReturn, "0|");
+                    //前缀线路名与查询线路名ID相同
+                    strcat(*ExpelLineReturn, "0|");//丢弃
                     break;
                 }
             }
-            if (comple != 0)
+            if (Strcmp_Compare != 0)
             {
-                strcat(*ExpelLineReturn, "1|");
+                //所有结果不同
+                strcat(*ExpelLineReturn, "1|");//保留
             }
         }
-        col += 10;
+        Col += 10;//跳过一行十列
     }
-    free(tmp);
+    free(IDStock);//释放结构体内存空间
 }
 
-void StandPrintSQValue(sqlite3* db, const char* zSql,int* ret,int Model)
+void StandPrintSQValue(sqlite3* db, const char* zSql, int* ret, int Model)
 {
-    char** result = NULL;
+    //变量&定义
+    char** SQLiteResult = NULL;
     char ExpelLine[128] = { 0 };
-    char sql[128] = { 0 };
-    char busline[10] = { 0 };
     char* pExpelLine = ExpelLine;
-    int row, col, i, j = 0;
+    char SQL_BusLine[128] = { 0 };
+    char BusLine[10] = { 0 };
+    int Row, Col, i, j = 0;
+    //模式选择
     switch (Model)
     {
-    case 1:
-        BuslineExpelModel(db, ret, zSql, &pExpelLine);
-        strcat(busline, zSql);//转码避免查询错误
-        strcat(busline, "路");//转码避免查询错误
-        //strcpy(sql, "SELECT * FROM test WHERE context GLOB '*444*';");
-        sprintf(sql, "SELECT * FROM Date_2016 WHERE context GLOB '*%s*';", busline);
-        *ret = sqlite3_get_table(db, GBK_UTF8_Trans(sql), &result, &row, &col, NULL);
+    case 1: //公交线路去重查询模块
+        BuslineExpelModel(db, zSql, ret, &pExpelLine);
+        strcat(BusLine, zSql);//转码避免查询错误
+        strcat(BusLine, "路");//转码避免查询错误
+        //strcpy(SQL_BusLine, "SELECT * FROM test WHERE context GLOB '*444*';");
+        sprintf(SQL_BusLine, "SELECT * FROM Date_2016 WHERE context GLOB '*%s*';", BusLine);
+        *ret = sqlite3_get_table(db, GBK_UTF8_Trans(SQL_BusLine), &SQLiteResult, &Row, &Col, NULL);
         if (*ret != SQLITE_OK)
         {
             printf("sqlite3_get_table:%s\n", sqlite3_errmsg(db));
             exit(1);
         }
         break;
-    default:
-        *ret = sqlite3_get_table(db, zSql, &result, &row, &col, NULL);
+    default: //默认常规SQL查询
+        *ret = sqlite3_get_table(db, zSql, &SQLiteResult, &Row, &Col, NULL);
         if (*ret != SQLITE_OK)
         {
             printf("sqlite3_get_table:%s\n", sqlite3_errmsg(db));
@@ -160,53 +221,66 @@ void StandPrintSQValue(sqlite3* db, const char* zSql,int* ret,int Model)
         }
         break;
     }
-    int Index = col;
-    char* line[9] = { "查询内容如下：\n","\033[42;37;1m[ 时 间 ]\033[0;47;30m ","年","月","日",   //待转换字符
-                      "\033[42;37;1m[ 标 题 ]\033[0;47;30m ",                      //line_trans[5]
-                      "\033[42;37;1m[ 正 文 ]\033[0;47;30m " ,                     //line_trans[6]
+    int Index = Col;
+    char* ContextLine[9] = { "查询内容如下：\n","\033[42;37;1m[ 时 间 ]\033[0;47;30m ","年","月","日",   //待转换字符
+                      "\033[42;37;1m[ 标 题 ]\033[0;47;30m ",                      //ContextLine_Trans[5]
+                      "\033[42;37;1m[ 正 文 ]\033[0;47;30m " ,                     //ContextLine_Trans[6]
                       "\033[1;47;30m         -----------------------------           \n"
                       "                     输出完成                     \n"
-                      "               总计输出\033[1;46;37m ",                      //line_trans[7]
+                      "               总计输出\033[1;46;37m ",                      //ContextLine_Trans[7]
                       " \033[1;47;30m个数据\n"
-                      "          -----------------------------           \n" };     //line_trans[8]
-    char* line_trans[9];//存储转换后字符串指针
+                      "          -----------------------------           \n" };     //ContextLine_Trans[8]
+    char* ContextLine_Trans[9];//存储转换后字符串指针
     for (i = 0; i < 9; i++)
     {
         //GBK转UTF8
-        line_trans[i] = GBK_UTF8_Trans(line[i]);
+        ContextLine_Trans[i] = GBK_UTF8_Trans(ContextLine[i]);
     }
-    if (result == NULL)
+    if (SQLiteResult == NULL)
     {
-        printf("%s%d%s", line_trans[7], row, line_trans[8]);//打印输出统计
+        printf("%s%d%s", ContextLine_Trans[7], Row, ContextLine_Trans[8]);//打印输出统计
     }
     else
     {
-        printf("%s\n", line_trans[0]);
-        char* delim = "|";
-        char* tmp;
-        tmp = strtok(ExpelLine, delim);
-        while (tmp != NULL)
+        printf("%s\n", ContextLine_Trans[0]);
+        char* Separator = "|";
+        char* Strtok_ExpeLine;
+        if (Model == 1)
+        {
+            Strtok_ExpeLine = strtok(ExpelLine, Separator);
+        }
+        else
+        {
+            Strtok_ExpeLine = "0";
+        }
+        while (Strtok_ExpeLine != NULL)
         {
             //打印输出部分
             Index += 1;
-            if (strcmp(tmp, "0") != 0)
+            if (strcmp(Strtok_ExpeLine, "0") != 0)
             {
-                printf("%s%s%s%s%s%s%s\t\t%s%s\n", line_trans[1], result[Index], line_trans[2], result[Index + 1], line_trans[3], result[Index + 2], line_trans[4], line_trans[5], result[Index + 3]);
-                printf("%s\n%s", line_trans[6], result[Index + 4]);
+                printf("%s%s%s%s%s%s%s\t\t%s%s\n", ContextLine_Trans[1], SQLiteResult[Index], ContextLine_Trans[2], SQLiteResult[Index + 1], ContextLine_Trans[3], SQLiteResult[Index + 2], ContextLine_Trans[4], ContextLine_Trans[5], SQLiteResult[Index + 3]);
+                printf("%s\n%s", ContextLine_Trans[6], SQLiteResult[Index + 4]);
                 printf("\n");
                 printf("\n");
                 j++;
             }
             Index += 9;
-            tmp = strtok(NULL, delim);
+            if (Model == 1)
+            {
+                Strtok_ExpeLine = strtok(NULL, Separator);
+            }
+            else
+            {
+                Strtok_ExpeLine = "0";
+            }
         }
-        
         printf("\n");
-        printf("%s%d%s", line_trans[7], j, line_trans[8]);//打印输出统计
+        printf("%s%d%s", ContextLine_Trans[7], j, ContextLine_Trans[8]);//打印输出统计
         for (i = 0; i < 9; i++)
         {
             //释放存储指针
-            free(line_trans[i]);
+            free(ContextLine_Trans[i]);
         }
     }
 }
@@ -235,12 +309,12 @@ void SQliteSearch()
     char sql[128] = { 0 };
     memset(sql, 0, sizeof(sql));
     char busline[10] = { 0 };
-    printf("请选择查询线路号：");
+    printf("请输入查询线路号：\n");
     scanf("%s", &busline);
     //strcat(busline, "路");//转码避免查询错误
     windows_cmd_support_utf8();//cmd转码
     //strcpy(sql, "SELECT * FROM test WHERE context GLOB '*444*';");
-    sprintf(sql, "SELECT * FROM Date_2016 WHERE context GLOB '*%s*';",busline);
+    //sprintf(sql, "SELECT * FROM Date_2016 WHERE context GLOB '*%s*';",busline);
     StandPrintSQValue(ppdb, busline, &ret, 1);
     system("pause");
     ret = sqlite3_close(ppdb);
